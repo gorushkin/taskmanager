@@ -11,6 +11,7 @@
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
+    "concurrently": "^5.3.0",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
@@ -19,11 +20,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "front": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "back": "nodemon --exec npx babel-node server/index.js"
+    "back": "nodemon --exec npx babel-node server/index.js",
+    "start": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\""
   },
   "eslintConfig": {
     "extends": [

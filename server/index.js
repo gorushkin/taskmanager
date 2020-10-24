@@ -22,17 +22,28 @@ app.get('/api/tasks', (req, res) => {
   res.json(state.taskList);
 });
 
-app.post('/api/addtask', (req, res) => {
+app.post('/api/task', (req, res) => {
   const { text } = req.body;
   const note = { id: getNextId(), text };
   state.taskList = [note, ...state.taskList];
   res.status(201).json(note).end();
 });
 
-app.delete('/api/removeTask/:id', (req, res) => {
+app.delete('/api/task/:id', (req, res) => {
   const id = Number(req.params.id);
   state.taskList = state.taskList.filter((item) => item.id !== id);
-  res.status(201).json({id}).end();
+  res.status(201).json({ id }).end();
+});
+
+app.patch('/api/task/:id', (req, res) => {
+  const { text } = req.body;
+  const id = Number(req.params.id);
+  state.taskList = state.taskList.map((item) => {
+    if (item.id !== id) return item;
+    return {...item, text}
+  });
+  console.log(state.taskList);
+  res.status(201).json({ id }).end();
 });
 
 app.listen(port, () => {

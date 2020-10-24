@@ -15,6 +15,13 @@ export const tasks = (state, action) => {
     case 'REMOVE_TASK': {
       return state.filter((item) => item.id !== action.payload);
     }
+    case 'RENAME_TASK': {
+      const { id, text } = action.payload;
+      return state.map((item) => {
+        if (item.id !== id) return item;
+        return { ...item, text };
+      });
+    }
     default:
       return state;
   }
@@ -30,7 +37,7 @@ export const TasksProvider = ({ children }) => {
   };
 
   const addNote = async (text) => {
-    const url = routes.addtask();
+    const url = routes.task();
     try {
       const res = await axios.post(url, { text });
       const { data } = res;
@@ -41,7 +48,7 @@ export const TasksProvider = ({ children }) => {
   };
 
   const removeNote = async (id) => {
-    const url = routes.removeTask(id);
+    const url = routes.task(id);
     try {
       const {
         data: { id },
@@ -50,8 +57,17 @@ export const TasksProvider = ({ children }) => {
     } catch (error) {}
   };
 
+  const renameNote = async (id, text) => {
+    const url = routes.task(id);
+    console.log(id, text);
+    try {
+      await axios.patch(url, { text });
+      dispatch({ type: 'RENAME_TASK', payload: {id, text} });
+    } catch (error) {}
+  };
+
   return (
-    <ContextApp.Provider value={{ state, dispatch, fetchData, addNote, removeNote }}>
+    <ContextApp.Provider value={{ state, dispatch, fetchData, addNote, removeNote, renameNote }}>
       {children}
     </ContextApp.Provider>
   );

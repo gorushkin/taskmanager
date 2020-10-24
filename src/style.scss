@@ -1,1 +1,43 @@
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
+
+.list__item{
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.list__main-content {
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+}
+
+.list__rename-btn {
+  display: block;
+  display: none;
+  padding: 0 1rem;
+  font-size: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #007bff;
+  }
+}
+
+.list__item:hover .list__rename-btn{
+  display: block;
+}
+
+.list__close-btn {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+}
