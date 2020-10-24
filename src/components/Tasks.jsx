@@ -1,7 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { ContextApp } from '../tasks';
+import cn from 'classnames';
 
-const ListItem = (id, text, removeHandler, renameNote) => {
+const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
   const Item = () => {
     const [edit, setEdit] = useState(false);
     const [value, setValue] = useState(text);
@@ -14,12 +15,22 @@ const ListItem = (id, text, removeHandler, renameNote) => {
       setEdit(true);
     };
 
+    const markDoneHandler = (id) => {
+      const note = { id, text, isDone: !isDone };
+      modifyTask(note);
+    }
+
     const submithandler = (e) => {
       e.preventDefault();
-      renameNote(id, value);
+      const note = { id, text: value, isDone };
+      modifyTask(note);
       setValue('');
       setEdit(false);
     };
+
+    const textClass = cn('list__text', {
+      'list__text--isdone': isDone,
+    });
 
     if (edit) {
       return (
@@ -49,12 +60,12 @@ const ListItem = (id, text, removeHandler, renameNote) => {
 
     return (
       <li key={id} className='list-group-item list__item mb-1'>
-        <div className='list__main-content'>
-          {text}
+        <div className={textClass}>{text}</div>
+        <div className='list__btns'>
           <button
             href='#'
             onClick={() => renameHandler(id)}
-            className='list__rename-btn'
+            className='list__btn'
             aria-hidden='true'
           >
             rename
@@ -62,15 +73,20 @@ const ListItem = (id, text, removeHandler, renameNote) => {
           <button
             href='#'
             onClick={() => removeHandler(id)}
-            className='list__rename-btn'
+            className='list__btn'
             aria-hidden='true'
           >
             remove
           </button>
+          <button
+            onClick={() => markDoneHandler(id)}
+            href='#'
+            className='list__btn'
+            aria-hidden='true'
+          >
+            mark done
+          </button>
         </div>
-        <button type='button' className='list__close-btn close2' aria-label='Close'>
-          <span aria-hidden='true'>&times;</span>
-        </button>
       </li>
     );
   };
@@ -91,7 +107,7 @@ const Tasks = () => {
 
   return (
     <ul className='list-group pt-5'>
-      {tasks.state.map(({ id, text }) => ListItem(id, text, removeHandler, tasks.renameNote))}
+      {tasks.state.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
     </ul>
   );
 };

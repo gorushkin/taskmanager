@@ -24,7 +24,7 @@ app.get('/api/tasks', (req, res) => {
 
 app.post('/api/task', (req, res) => {
   const { text } = req.body;
-  const note = { id: getNextId(), text };
+  const note = { id: getNextId(), text, isDone: false };
   state.taskList = [note, ...state.taskList];
   res.status(201).json(note).end();
 });
@@ -36,13 +36,13 @@ app.delete('/api/task/:id', (req, res) => {
 });
 
 app.patch('/api/task/:id', (req, res) => {
-  const { text } = req.body;
+  const { text, isDone } = req.body;
+  console.log('isDone: ', isDone);
   const id = Number(req.params.id);
   state.taskList = state.taskList.map((item) => {
     if (item.id !== id) return item;
-    return {...item, text}
+    return {...item, text, isDone}
   });
-  console.log(state.taskList);
   res.status(201).json({ id }).end();
 });
 
