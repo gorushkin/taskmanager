@@ -4,7 +4,7 @@ import routes from '../routes';
 import tasks from './reducer';
 import { ContextApp } from './index';
 
-export const TasksProvider = ({ children }) => {
+const TasksProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tasks, []);
 
   const fetchData = async () => {
@@ -48,3 +48,5 @@ export const TasksProvider = ({ children }) => {
     </ContextApp.Provider>
   );
 };
+
+export default TasksProvider;

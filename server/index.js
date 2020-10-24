@@ -1,14 +1,18 @@
 import express from 'express';
 import _ from 'lodash';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 
 const getNextId = () => Number(_.uniqueId());
 
 const state = {
   taskList: [],
+  users: [{name: 'qwe', password: 'qwe', id: 1}],
 };
 
 const app = express();
+
+app.use(morgan('combined'));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -45,6 +49,11 @@ app.patch('/api/task/:id', (req, res) => {
   });
   res.status(201).json({ id }).end();
 });
+
+app.post('/api/users', (req, res) => {
+  console.log('user');
+  console.log(req.body);
+})
 
 app.listen(port, () => {
   console.log(`server started at ${port} port`);
