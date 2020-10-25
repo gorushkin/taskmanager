@@ -7,7 +7,7 @@ const getNextId = () => Number(_.uniqueId());
 
 const state = {
   taskList: [],
-  users: [{name: 'qwe', password: 'qwe', id: 1}],
+  users: [{name: 'Artyom',  email: 'qwe', password: 'qwe', id: 1 }],
 };
 
 const app = express();
@@ -45,15 +45,24 @@ app.patch('/api/task/:id', (req, res) => {
   const id = Number(req.params.id);
   state.taskList = state.taskList.map((item) => {
     if (item.id !== id) return item;
-    return {...item, text, isDone}
+    return { ...item, text, isDone };
   });
   res.status(201).json({ id }).end();
 });
 
 app.post('/api/users', (req, res) => {
-  console.log('user');
-  console.log(req.body);
-})
+  const { email, password } = req.body;
+  const user = state.users[_.findIndex(state.users, { email })];
+  if (user) {
+    console.log('autorisation is success!!!');
+    console.log('user: ', user);
+    res.status(200).json({ user }).end();
+  } else {
+    console.log('wrong login or password!!!');
+    res.status(403).end()
+  }
+  // check
+});
 
 app.listen(port, () => {
   console.log(`server started at ${port} port`);

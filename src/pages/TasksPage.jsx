@@ -1,6 +1,13 @@
 import React from 'react';
-import App from '../components/App'
+import InputForm from '../components/InputForm';
+import Tasks from '../components/Tasks';
+import { TasksProvider } from '../tasks';
 
-const TasksPage = () => <App />;
+const TasksPage = () => (
+  <TasksProvider>
+    <InputForm />
+    <Tasks />
+  </TasksProvider>
+);
 
 export default TasksPage;

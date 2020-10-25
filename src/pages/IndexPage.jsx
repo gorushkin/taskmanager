@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
-import { UserProvider } from '../user';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { ContextUser } from '../user';
 
-const IndexPage = () => (
-  <UserProvider>
-    <AuthForm></AuthForm>
-  </UserProvider>
-);
+const IndexPage = () => {
+  const user = useContext(ContextUser);
+
+  return (
+    <>
+      <h1>Hellow, {user.state.name}</h1>
+      <Link to='/auth'>Auth</Link>
+      <Link to='/tasks'>Tasks</Link>
+    </>
+  );
+};
 
 export default IndexPage;

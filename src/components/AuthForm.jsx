@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import { ContextUser } from '../user';
 
 const AuthForm = () => {
@@ -9,7 +8,6 @@ const AuthForm = () => {
 
   const signInHandler = (e) => {
     e.preventDefault();
-    console.log(form);
     user.userSignIn(form);
   };
 
