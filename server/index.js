@@ -1,7 +1,6 @@
 import express from 'express';
 import _ from 'lodash';
 import bodyParser from 'body-parser';
-import morgan from 'morgan';
 
 const getNextId = () => Number(_.uniqueId());
 
@@ -12,7 +11,6 @@ const state = {
 
 const app = express();
 
-app.use(morgan('combined'));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

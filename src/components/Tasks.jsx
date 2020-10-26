@@ -106,9 +106,11 @@ const Tasks = () => {
   };
 
   return (
-    <ul className='list-group pt-5'>
-      {tasks.state.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
-    </ul>
+    <div className='col'>
+      <ul className='list-group pt-5 '>
+        {tasks.state.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
+      </ul>
+    </div>
   );
 };
 

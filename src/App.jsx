@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import TasksPage from './pages/TasksPage';
 import AuthPage from './pages/AuthPage';
-import IndexPage from './pages/IndexPage';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
 import { ContextUser } from './user';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const user = useContext(ContextUser);
@@ -13,15 +15,17 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <Switch>
-        <Router>
-          <Route path='/' exact component={IndexPage} />
-          <Route path='/auth' component={AuthPage} />
+    <BrowserRouter>
+      <Navbar />
+      <div className='container py-3'>
+        <Switch>
+          <Route path='/' exact component={HomePage} />
+          <Route path='/about' component={AboutPage} />
           <Route path='/tasks' component={TasksPage} />
-        </Router>
-      </Switch>
-    </Router>
+          <Route path='/auth' component={AuthPage} />
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 };
 
