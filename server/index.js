@@ -1,6 +1,11 @@
 import express from 'express';
 import _ from 'lodash';
 import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const getNextId = () => Number(_.uniqueId());
 
@@ -13,11 +18,13 @@ const app = express();
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
 
 const port = process.env.PORT || 4000;
 
 app.get('/', (req, res) => {
-  res.send('<h2>Привет Express!</h2>');
+  res.sendFile(path.join(__dirname,'../', 'build', 'index.html'));
 });
 
 app.get('/api/tasks', (req, res) => {

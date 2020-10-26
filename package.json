@@ -34,7 +34,7 @@
     "back-dev": "nodemon --exec npx babel-node server/index.js",
     "back": "node server/index.js",
     "start-dev": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\"",
-    "start": "concurrently \"node server/index.js\"  \"react-scripts start\""
+    "start": "node server/index.js"
   },
   "eslintConfig": {
     "extends": [
