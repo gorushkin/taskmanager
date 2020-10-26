@@ -2,6 +2,7 @@
   "name": "taskmanager",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.5",
@@ -33,7 +34,7 @@
     "back-dev": "nodemon --exec npx babel-node server/index.js",
     "back": "node server/index.js",
     "start-dev": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\"",
-    "start": "babel-node server/index.js"
+    "start": "node server/index.js"
   },
   "eslintConfig": {
     "extends": [
