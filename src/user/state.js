@@ -27,7 +27,7 @@ const UserProvider = ({ children }) => {
       id: '',
       isGuest: true,
     };
-    console.log('initUserState: ', initUserState);
+    // console.log('initUserState: ', initUserState);
     dispatch({ type: 'USER__INIT', payload: { user: (initUserState) } });
   };
 

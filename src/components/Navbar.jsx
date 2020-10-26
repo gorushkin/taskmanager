@@ -2,10 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => (
-  <nav className='navbar navbar-expand-lg navbar-light bg-primary'>
-    <span className='navbar-brand text-white'>
-      TaskManager
-    </span>
+  <nav className='navbar-expand-lg navbar navbar-dark bg-primary'>
+    <span className='navbar-brand text-white'>TaskManager</span>
     <button
       className='navbar-toggler'
       type='button'
@@ -19,18 +17,18 @@ const Navbar = () => (
     </button>
     <div className='collapse navbar-collapse' id='navbarNav'>
       <ul className='navbar-nav'>
-        <li className='nav-item active'>
-          <NavLink className='nav-link text-white' to='/'>
-            Home <span className='sr-only'>(current)</span>
+        <li className='nav-item'>
+          <NavLink className='nav-link' exact to='/'>
+            Home
           </NavLink>
         </li>
         <li className='nav-item'>
-          <NavLink className='nav-link text-white' to='/tasks'>
+          <NavLink className='nav-link' to='/tasks'>
             TaskList
           </NavLink>
         </li>
         <li className='nav-item'>
-          <NavLink className='nav-link text-white' to='/about'>
+          <NavLink className='nav-link' to='/about'>
             About
           </NavLink>
         </li>
