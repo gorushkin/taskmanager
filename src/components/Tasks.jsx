@@ -99,6 +99,7 @@ const Tasks = () => {
 
   useEffect(() => {
     tasks.fetchData();
+    console.log('fetching notes from server');
   }, []);
 
   const removeHandler = (id) => {
