@@ -30,7 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "back": "nodemon --exec npx babel-node server/index.js",
+    "back-dev": "nodemon --exec npx babel-node server/index.js",
+    "back": "node server/index.js",
     "start": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\""
   },
   "eslintConfig": {
