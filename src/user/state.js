@@ -8,7 +8,7 @@ const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
 
   const userSignIn = async ({ email, password }) => {
-    const url = routes.users();
+    const url = routes.login();
     try {
       const res = await axios.post(url, { email, password });
       const { user } = res.data;
