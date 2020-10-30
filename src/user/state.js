@@ -22,13 +22,12 @@ const UserProvider = ({ children }) => {
 
   const userInit = () => {
     const initUserState = JSON.parse(localStorage.getItem('token')) || {
-      name: 'Ivan',
+      name: 'NoName',
       email: '',
       id: '',
       isGuest: true,
     };
-    // console.log('initUserState: ', initUserState);
-    dispatch({ type: 'USER__INIT', payload: { user: (initUserState) } });
+    dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
   };
 
   return (

@@ -2,6 +2,7 @@
   "name": "taskmanager",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -33,7 +34,7 @@
     "eject": "react-scripts eject",
     "back-dev": "nodemon --exec npx babel-node server/index.js",
     "back": "node server/index.js",
-    "start-dev": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\"",
+    "dev": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\"",
     "start": "node server/index.js"
   },
   "eslintConfig": {
