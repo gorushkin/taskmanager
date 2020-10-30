@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import state from '../state/index.js';
 
-const auth = (req, res) => {
+const login = (req, res) => {
   const { email, password } = req.body;
   const user = state.users[_.findIndex(state.users, { email })];
   if (user) {
@@ -14,4 +14,9 @@ const auth = (req, res) => {
   }
 };
 
-export default auth;
+const register = (req, res) => {
+  console.log('register');
+  res.status(200).end();
+};
+
+export { login, register };
