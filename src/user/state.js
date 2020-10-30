@@ -12,7 +12,7 @@ const UserProvider = ({ children }) => {
     try {
       const res = await axios.post(url, { email, password });
       const { user } = res.data;
-      user.isGuest = false;
+      // user.isGuest = false;
       localStorage.setItem('toket', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {

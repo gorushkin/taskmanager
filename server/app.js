@@ -3,22 +3,21 @@ import _ from 'lodash';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
+// import controller from './controllers/auth.js';
+import state from './state/index.js';
+import auth from './routes/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getNextId = () => Number(_.uniqueId());
 
-const state = {
-  taskList: [],
-  users: [{ name: 'Artyom', email: 'qwe', password: 'qwe', id: 1 }],
-};
-
 const app = express();
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../', 'build')));
+app.use('/api', auth);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
@@ -52,17 +51,6 @@ app.patch('/api/task/:id', (req, res) => {
   res.status(201).json({ id }).end();
 });
 
-app.post('/api/users', (req, res) => {
-  const { email, password } = req.body;
-  const user = state.users[_.findIndex(state.users, { email })];
-  if (user) {
-    console.log('autorisation is success!!!');
-    console.log('user: ', user);
-    res.status(200).json({ user }).end();
-  } else {
-    console.log('wrong login or password!!!');
-    res.status(403).end();
-  }
-});
+// app.post('/api/users', controller);
 
 export default app;
