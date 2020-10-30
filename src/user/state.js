@@ -10,11 +10,13 @@ const UserProvider = ({ children }) => {
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
     try {
+      console.log('url: ', url);
       const res = await axios.post(url, { email, password });
+      console.log('res: ', res);
       const { user } = res.data;
       user.isGuest = false;
-      localStorage.setItem('toket', JSON.stringify(user));
-      dispatch({ type: 'USER__SIGNIN', payload: { user } });
+      // localStorage.setItem('toket', JSON.stringify(user));
+      // dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
       console.log(error);
     }
