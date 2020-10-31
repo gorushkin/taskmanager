@@ -2,13 +2,18 @@ import React, { useState, useContext } from 'react';
 import { ContextUser } from '../user';
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ email: 'qwe', password: 'qwe' });
+  const [form, setForm] = useState({ email: 'artyom', password: '12345' });
 
   const user = useContext(ContextUser);
 
   const signInHandler = (e) => {
     e.preventDefault();
     user.userSignIn(form);
+  };
+
+  const signUpHandler = (e) => {
+    e.preventDefault();
+    user.userSignUp(form);
   };
 
   const onChangeHandler = (e) => {
@@ -47,7 +52,7 @@ const AuthForm = () => {
       <button className='btn btn-primary' onClick={signInHandler}>
         Sign In
       </button>
-      <button className='btn btn-primary' onClick={signInHandler}>
+      <button className='btn btn-primary' onClick={signUpHandler}>
         Sign Up
       </button>
     </form>

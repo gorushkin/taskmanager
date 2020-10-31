@@ -3,6 +3,7 @@ import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
+import routers from '../routes';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
@@ -10,27 +11,28 @@ const UserProvider = ({ children }) => {
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
     try {
-      console.log('url: ', url);
       const res = await axios.post(url, { email, password });
-      console.log('res: ', res);
       const { user } = res.data;
-      user.isGuest = false;
-      // localStorage.setItem('toket', JSON.stringify(user));
-      // dispatch({ type: 'USER__SIGNIN', payload: { user } });
+      dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const userInit = () => {
-    const initUserState = JSON.parse(localStorage.getItem('token')) || {
-      name: 'NoName',
-      email: '',
-      id: '',
-      isGuest: true,
-    };
-    dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
+  const userSignUp = async ({ email, password }) => {
+    const url = routers.register();
+    console.log('url: ', url);
   };
+
+  // const userInit = () => {
+  //   const initUserState = JSON.parse(localStorage.getItem('token')) || {
+  //     name: 'NoName',
+  //     email: '',
+  //     id: '',
+  //     isGuest: true,
+  //   };
+  //   dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
+  // };
 
   return (
     <ContextUser.Provider
@@ -38,7 +40,8 @@ const UserProvider = ({ children }) => {
         state,
         dispatch,
         userSignIn,
-        userInit,
+        userSignUp,
+        // userInit,
       }}
     >
       {children}

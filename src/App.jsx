@@ -11,9 +11,9 @@ const App = () => {
   const user = useContext(ContextUser);
   console.log(user.state.isGuest);
 
-  useEffect(() => {
-    user.userInit();
-  }, []);
+  // useEffect(() => {
+  //   user.userInit();
+  // }, []);
 
   return (
     <BrowserRouter>
