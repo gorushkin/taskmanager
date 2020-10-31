@@ -1,19 +1,37 @@
-import _ from 'lodash';
-import bcrypt from 'bcryptjs';
-import state from '../state/index.js';
+import encrypt from '../encrypt.js';
 import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-const login = (req, res) => {
+dotenv.config();
+
+const login = async (req, res) => {
+  console.log('login');
   const { email, password } = req.body;
-  console.log('email: ', email);
-  const user = state.users[_.findIndex(state.users, { email })];
+  const user = await User.findOne({ email });
   if (user) {
-    console.log('autorisation is success!!!');
-    console.log('user: ', user);
-    res.status(200).json({ user }).end();
+    if (encrypt(password) === user.password) {
+      const token = jwt.sign(
+        {
+          email: user.email,
+          userId: user._id,
+        },
+        process.env.JWT,
+        { expiresIn: 3600 }
+      );
+      res
+        .status(200)
+        .json({
+          user,
+          token: `Bearer ${token}`,
+          message: 'autorisation is success!!!',
+        })
+        .end();
+    } else {
+      res.status(403).json({ message: 'Wrong passwod!' });
+    }
   } else {
-    console.log('wrong login or password!!!');
-    res.status(403).end();
+    res.status(403).json({ message: 'There is no user with this email' }).end();
   }
 };
 
@@ -29,9 +47,8 @@ const register = async (req, res) => {
       })
       .end();
   }
-  const salt = bcrypt.genSaltSync(10);
-  const hashPassword = bcrypt.hashSync(password, salt);
-  const user = new User({ email, password: hashPassword });
+  const hash = encrypt(password);
+  const user = new User({ email, password: hash });
   try {
     await user.save();
     res
