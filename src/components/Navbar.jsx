@@ -4,6 +4,7 @@ import { ContextUser } from '../user/index';
 
 const Navbar = () => {
   const user = useContext(ContextUser);
+  console.log('user: ', user.state);
 
   return (
     <nav className='navbar-expand-lg navbar navbar-dark bg-primary'>

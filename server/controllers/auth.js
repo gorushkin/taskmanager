@@ -23,7 +23,10 @@ const login = async (req, res) => {
       res
         .status(200)
         .json({
-          user,
+          user: {
+            email: user.email,
+            userId: user._id,
+          },
           token: `Bearer ${token}`,
           message: 'autorisation is success!!!',
         })

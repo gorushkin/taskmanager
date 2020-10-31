@@ -12,7 +12,10 @@ const UserProvider = ({ children }) => {
     const url = routes.login();
     try {
       const res = await axios.post(url, { email, password });
-      const { user } = res.data;
+      const { user, token } = res.data;
+      console.log('token: ', token);
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
       console.log(error);
@@ -24,15 +27,15 @@ const UserProvider = ({ children }) => {
     console.log('url: ', url);
   };
 
-  // const userInit = () => {
-  //   const initUserState = JSON.parse(localStorage.getItem('token')) || {
-  //     name: 'NoName',
-  //     email: '',
-  //     id: '',
-  //     isGuest: true,
-  //   };
-  //   dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
-  // };
+  const userInit = () => {
+    const initUserState = JSON.parse(localStorage.getItem('user1')) || {
+      name: 'NoName',
+      email: '',
+      id: '',
+      isGuest: true,
+    };
+    dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
+  };
 
   return (
     <ContextUser.Provider
@@ -41,7 +44,7 @@ const UserProvider = ({ children }) => {
         dispatch,
         userSignIn,
         userSignUp,
-        // userInit,
+        userInit,
       }}
     >
       {children}
