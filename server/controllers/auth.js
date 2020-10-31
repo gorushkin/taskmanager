@@ -1,6 +1,7 @@
 import encrypt from '../encrypt.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+// import pjwt from 'passport-jwt;
 import dotenv from 'dotenv';
 
 dotenv.config();

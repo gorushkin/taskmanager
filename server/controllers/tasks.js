@@ -1,8 +1,11 @@
 import _ from 'lodash';
-import state from '../state/index.js';
 const getNextId = () => Number(_.uniqueId());
+const state = {
+  taskList: ['asdfadf'],
+};
 
 const getTasks = (req, res) => {
+  console.log('tasks');
   res.json(state.taskList);
 };
 
