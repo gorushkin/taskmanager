@@ -1,7 +1,6 @@
 import encrypt from '../encrypt.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-// import pjwt from 'passport-jwt;
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -27,7 +26,8 @@ const login = async (req, res) => {
             email: user.email,
             userId: user._id,
           },
-          token: `Bearer ${token}`,
+          // token: `Bearer ${token}`,
+          token,
           message: 'autorisation is success!!!',
         })
         .end();

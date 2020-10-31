@@ -3,9 +3,19 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-  text: String,
-  isDone: Boolean,
-  userId: '',
+  text: {
+    type: String,
+    required: true,
+  },
+  isDone: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
-export default mongoose.model('tasks', taskSchema);
+export default mongoose.model('task', taskSchema);
