@@ -22,7 +22,8 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
 
     const submithandler = (e) => {
       e.preventDefault();
-      const note = { _id, text: value, isDone };
+      const note = { id: _id, text: value, isDone };
+      console.log('note: ', note);
       modifyTask(note);
       setValue('');
       setEdit(false);
