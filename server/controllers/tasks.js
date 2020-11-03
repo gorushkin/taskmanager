@@ -45,15 +45,15 @@ const removeTask = async (req, res) => {
   }
 };
 
-const renameTask = (req, res) => {
+const renameTask = async (req, res) => {
   const { text, isDone } = req.body;
-  console.log('isDone: ', isDone);
-  const id = Number(req.params.id);
-  state.taskList = state.taskList.map((item) => {
-    if (item.id !== id) return item;
-    return { ...item, text, isDone };
-  });
-  res.status(201).json({ id }).end();
+  const id = req.params.id;
+  try {
+    const {_id} = await Task.findByIdAndUpdate(id, { text, isDone });
+    res.status(201).json({ _id, message: 'Task was updated!!!' }).end();
+  } catch (error) {
+
+  }
 };
 
 export { getTasks, addTask, removeTask, renameTask };

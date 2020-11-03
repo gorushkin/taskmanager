@@ -17,7 +17,11 @@ dotenv.config();
 const app = express();
 
 mongoose
-  .connect(process.env.DB_K, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.DB_K, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log('MongoDB connected!'))
   .catch((error) => console.log(error.message));
 
