@@ -5,7 +5,6 @@ const state = {
 };
 
 const getTasks = async (req, res) => {
-  console.log('fetching!!!');
   const {
     user: { userId },
   } = req;
@@ -14,8 +13,8 @@ const getTasks = async (req, res) => {
     res.status(200).json({ tasks }).end();
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: error }).end();
   }
-  res.end();
 };
 
 const addTask = async (req, res) => {
@@ -32,13 +31,18 @@ const addTask = async (req, res) => {
       .end();
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: error }).end();
   }
 };
 
-const removeTask = (req, res) => {
-  const id = Number(req.params.id);
-  state.taskList = state.taskList.filter((item) => item.id !== id);
-  res.status(201).json({ id }).end();
+const removeTask = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const {_id} = await Task.findByIdAndDelete(id);
+    res.status(200).json({_id}).end();
+  } catch (error) {
+    res.status(500).json({ message: error.message }).end();
+  }
 };
 
 const renameTask = (req, res) => {

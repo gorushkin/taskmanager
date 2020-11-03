@@ -32,7 +32,7 @@ const TasksProvider = ({ children }) => {
       console.log('note: ', note);
       dispatch({ type: 'ADD_TASK', payload: note });
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
     }
   };
 
@@ -40,10 +40,12 @@ const TasksProvider = ({ children }) => {
     const url = routes.task(id);
     try {
       const {
-        data: { id },
+        data: { _id },
       } = await axios.delete(url, { headers: { Authorization: token } });
-      dispatch({ type: 'REMOVE_TASK', payload: id });
-    } catch (error) {}
+      dispatch({ type: 'REMOVE_TASK', payload: _id });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const modifyTask = async ({ id, text, isDone }) => {
@@ -51,7 +53,9 @@ const TasksProvider = ({ children }) => {
     try {
       await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
       dispatch({ type: 'MODIFY_TASK', payload: { id, text, isDone } });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
