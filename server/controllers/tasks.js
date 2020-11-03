@@ -45,15 +45,13 @@ const removeTask = async (req, res) => {
   }
 };
 
-const renameTask = async (req, res) => {
+const modifyTask = async (req, res) => {
   const { text, isDone } = req.body;
   const id = req.params.id;
   try {
-    const {_id} = await Task.findByIdAndUpdate(id, { text, isDone });
+    const { _id } = await Task.findByIdAndUpdate(id, { text, isDone });
     res.status(201).json({ _id, message: 'Task was updated!!!' }).end();
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
-export { getTasks, addTask, removeTask, renameTask };
+export { getTasks, addTask, removeTask, modifyTask };
