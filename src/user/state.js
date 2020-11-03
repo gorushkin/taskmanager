@@ -11,8 +11,9 @@ const UserProvider = ({ children }) => {
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
     try {
-      const res = await axios.post(url, { email, password });
-      const { user, token } = res.data;
+      const {
+        data: { user, token },
+      } = await axios.post(url, { email, password });
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
@@ -23,7 +24,13 @@ const UserProvider = ({ children }) => {
 
   const userSignUp = async ({ email, password }) => {
     const url = routers.register();
-    console.log('url: ', url);
+    try {
+      const { user, token } = await axios.post(url, { email, password });
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const userInit = () => {
