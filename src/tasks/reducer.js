@@ -4,7 +4,7 @@ export const tasks = (state, action) => {
       return [action.payload, ...state];
     }
     case 'FETCH_TASKS': {
-      return [...action.payload.data];
+      return [...action.payload];
     }
     case 'REMOVE_TASK': {
       return state.filter((item) => item.id !== action.payload);

@@ -64,7 +64,9 @@ const register = async (req, res) => {
         message: 'use created',
       })
       .end();
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export { login, register };

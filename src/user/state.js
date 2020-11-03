@@ -13,7 +13,6 @@ const UserProvider = ({ children }) => {
     try {
       const res = await axios.post(url, { email, password });
       const { user, token } = res.data;
-      console.log('token: ', token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });

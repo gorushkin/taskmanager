@@ -10,17 +10,27 @@ const TasksProvider = ({ children }) => {
 
   const fetchData = async () => {
     const url = routes.tasks();
-    console.log('token: ', token);
-    const data = await axios.get(url, { headers: { Authorization: token } });
-    dispatch({ type: 'FETCH_TASKS', payload: data });
+    try {
+      const {
+        data: { tasks },
+      } = await axios.get(url, { headers: { Authorization: token } });
+      console.log('tasks: ', tasks);
+      dispatch({ type: 'FETCH_TASKS', payload: tasks });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  const addNote = async (text) => {
+  const addNote = async (text, userId) => {
     const url = routes.task();
+    console.log(text, userId);
     try {
-      const res = await axios.post(url, { text }, { headers: { Authorization: token } });
-      const { data } = res;
-      dispatch({ type: 'ADD_TASK', payload: data });
+      const res = await axios.post(url, { text, userId }, { headers: { Authorization: token } });
+      const {
+        data: { note },
+      } = res;
+      console.log('note: ', note);
+      dispatch({ type: 'ADD_TASK', payload: note });
     } catch (error) {
       throw new Error(error);
     }

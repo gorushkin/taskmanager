@@ -1,20 +1,38 @@
-import _ from 'lodash';
-const getNextId = () => Number(_.uniqueId());
+import Task from '../models/Tasks.js';
+
 const state = {
-  taskList: ['asdfadf'],
+  taskList: [],
 };
 
-const getTasks = (req, res) => {
-  console.log('tasks');
-  console.log(req.user);
-  res.json(state.taskList);
+const getTasks = async (req, res) => {
+  console.log('fetching!!!');
+  const {
+    user: { userId },
+  } = req;
+  try {
+    const tasks = await Task.find({ userId });
+    res.status(200).json({ tasks }).end();
+  } catch (error) {
+    console.log(error);
+  }
+  res.end();
 };
 
-const addTask = (req, res) => {
-  const { text } = req.body;
-  const note = { id: getNextId(), text, isDone: false };
-  state.taskList = [note, ...state.taskList];
-  res.status(201).json(note).end();
+const addTask = async (req, res) => {
+  const { text, userId } = req.body;
+  const note = new Task({ text, isDone: false, userId });
+  try {
+    await note.save();
+    res
+      .status(201)
+      .json({
+        note,
+        message: 'task created',
+      })
+      .end();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const removeTask = (req, res) => {
