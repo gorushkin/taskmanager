@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import TasksPage from './pages/TasksPage';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';

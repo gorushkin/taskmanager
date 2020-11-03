@@ -28,7 +28,7 @@ const UserProvider = ({ children }) => {
   };
 
   const userInit = () => {
-    const initUserState = JSON.parse(localStorage.getItem('user1')) || {
+    const initUserState = JSON.parse(localStorage.getItem('user')) || {
       name: 'NoName',
       email: '',
       id: '',

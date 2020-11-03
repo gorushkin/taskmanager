@@ -5,8 +5,8 @@ const state = {
 };
 
 const getTasks = (req, res) => {
-  // console.log(req.header('Authorization'));
   console.log('tasks');
+  console.log(req.user);
   res.json(state.taskList);
 };
 

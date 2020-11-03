@@ -6,17 +6,19 @@ import { ContextApp } from './index';
 
 const TasksProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tasks, []);
+  const token = localStorage.getItem('token');
 
   const fetchData = async () => {
     const url = routes.tasks();
-    const data = await axios.get(url);
+    console.log('token: ', token);
+    const data = await axios.get(url, { headers: { Authorization: token } });
     dispatch({ type: 'FETCH_TASKS', payload: data });
   };
 
   const addNote = async (text) => {
     const url = routes.task();
     try {
-      const res = await axios.post(url, { text });
+      const res = await axios.post(url, { text }, { headers: { Authorization: token } });
       const { data } = res;
       dispatch({ type: 'ADD_TASK', payload: data });
     } catch (error) {
@@ -29,7 +31,7 @@ const TasksProvider = ({ children }) => {
     try {
       const {
         data: { id },
-      } = await axios.delete(url);
+      } = await axios.delete(url, { headers: { Authorization: token } });
       dispatch({ type: 'REMOVE_TASK', payload: id });
     } catch (error) {}
   };
@@ -37,7 +39,7 @@ const TasksProvider = ({ children }) => {
   const modifyTask = async ({ id, text, isDone }) => {
     const url = routes.task(id);
     try {
-      await axios.patch(url, { text, isDone });
+      await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
       dispatch({ type: 'MODIFY_TASK', payload: { id, text, isDone } });
     } catch (error) {}
   };

@@ -26,7 +26,6 @@ const login = async (req, res) => {
             email: user.email,
             userId: user._id,
           },
-          // token: `Bearer ${token}`,
           token,
           message: 'autorisation is success!!!',
         })

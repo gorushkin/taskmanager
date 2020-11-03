@@ -11,7 +11,8 @@ const auth = (req, res, next) => {
     if (!verified) {
       return res.status(401).json({ message: 'Failde verification' });
     }
-    res.status(200).json({ message: 'Auth is done!!!' });
+    req.user = verified;
+    next();
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
