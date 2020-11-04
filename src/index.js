@@ -4,10 +4,13 @@ import App from './App';
 import './style.scss';
 import 'bootstrap';
 import { UserProvider } from './user';
+import { TasksProvider } from './tasks';
 
 ReactDOM.render(
   <UserProvider>
-    <App />
+    <TasksProvider>
+      <App />
+    </TasksProvider>
   </UserProvider>,
   document.getElementById('root')
 );

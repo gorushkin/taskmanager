@@ -2,6 +2,7 @@ const host = '';
 const prefix = 'api';
 
 const routers = {
+  user: () => [host, prefix, 'user'].join('/'),
   login: () => [host, prefix, 'login'].join('/'),
   register: () => [host, prefix, 'register'].join('/'),
   tasks: () => [host, prefix, 'tasks'].join('/'),

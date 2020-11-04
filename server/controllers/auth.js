@@ -69,4 +69,23 @@ const register = async (req, res) => {
   }
 };
 
-export { login, register };
+const getUserData = (req, res) => {
+  const token = req.header('Authorization');
+  if (!token) {
+    const user = {
+      email: null,
+      userId: null,
+    };
+    res.status(200).json({ message: 'there is no token', user }).end();
+    return;
+  }
+  try {
+    const user = jwt.verify(token, process.env.JWT);
+    res.status(200).json({message: 'token', user}).end();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message: error.message}).end();
+  }
+};
+
+export { login, register, getUserData };

@@ -1,12 +1,14 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
+// import { ContextApp } from '../tasks';
 import routers from '../routes';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
+  // const tasks = useContext(ContextApp);
 
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
@@ -33,14 +35,17 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const userInit = () => {
-    const initUserState = JSON.parse(localStorage.getItem('user')) || {
-      name: 'NoName',
-      email: '',
-      id: '',
-      isGuest: true,
-    };
-    dispatch({ type: 'USER__INIT', payload: { user: initUserState } });
+  const userInit = async () => {
+    const url = routers.user();
+    const token = localStorage.getItem('token') || '';
+    try {
+      const {
+        data: { user, message },
+      } = await axios(url, { headers: { Authorization: token } });
+      dispatch({ type: 'USER__INIT', payload: { user } });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

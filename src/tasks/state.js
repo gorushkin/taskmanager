@@ -9,6 +9,7 @@ const TasksProvider = ({ children }) => {
   const token = localStorage.getItem('token');
 
   const fetchData = async () => {
+    console.log('fetchData');
     const url = routes.tasks();
     try {
       const {

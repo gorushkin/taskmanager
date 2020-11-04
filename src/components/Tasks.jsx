@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ContextApp } from '../tasks';
 import cn from 'classnames';
 
@@ -97,10 +97,7 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
 
 const Tasks = () => {
   const tasks = useContext(ContextApp);
-
-  useEffect(() => {
-    tasks.fetchData();
-  }, []);
+  console.log('tasks: ', tasks.state);
 
   const removeHandler = (id) => {
     tasks.removeNote(id);

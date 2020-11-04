@@ -1,9 +1,5 @@
 import Task from '../models/Tasks.js';
 
-const state = {
-  taskList: [],
-};
-
 const getTasks = async (req, res) => {
   const {
     user: { userId },

@@ -5,14 +5,20 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import { ContextUser } from './user';
+import { ContextApp } from './tasks';
 import Navbar from './components/Navbar';
 
 const App = () => {
   const user = useContext(ContextUser);
+  const tasks = useContext(ContextApp);
 
   useEffect(() => {
     user.userInit();
   }, []);
+
+  useEffect(() => {
+    tasks.fetchData();
+  }, [user.state]);
 
   return (
     <BrowserRouter>
