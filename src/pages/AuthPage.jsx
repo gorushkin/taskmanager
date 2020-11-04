@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import AuthForm from '../components/AuthForm';
 import { ContextUser } from '../user';
@@ -13,7 +12,7 @@ const AuthPage = () => {
       console.log('redrect!!!');
       history.push('/tasks')
     }
-  }, [user.state]);
+  });
 
   return <AuthForm></AuthForm>;
 };

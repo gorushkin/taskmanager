@@ -1,17 +1,14 @@
 import React, { useContext } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, Link } from 'react-router-dom';
 import { ContextUser } from '../user/';
-// import { ContextApp } from '../tasks';
 
 const Navbar = () => {
   const user = useContext(ContextUser);
-  // const tasks = useContext(ContextApp);
   const history = useHistory();
 
   const logoutHandler = (e) => {
     e.preventDefault();
     user.userLogout();
-    // tasks.logout();
     history.push('/')
   };
 
@@ -48,9 +45,9 @@ const Navbar = () => {
           </li>
           <li className='nav-item'>
             {user.state.email ? (
-              <NavLink to="/" onClick={logoutHandler} className='nav-link'>
+              <Link to="/" onClick={logoutHandler} className='nav-link'>
                 LogOut
-              </NavLink>
+              </Link>
             ) : (
               <NavLink className='nav-link' to='/auth'>
                 LogIn / Register
