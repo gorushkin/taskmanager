@@ -36,6 +36,17 @@ const Navbar = () => {
               About
             </NavLink>
           </li>
+          <li className='nav-item'>
+            {user.state.email ? (
+              <NavLink className='nav-link' to='/about'>
+                LogOut
+              </NavLink>
+            ) : (
+              <NavLink className='nav-link' to='/auth'>
+                LogIn / Register
+              </NavLink>
+            )}
+          </li>
         </ul>
       </div>
     </nav>

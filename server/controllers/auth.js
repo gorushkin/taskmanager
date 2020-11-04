@@ -8,33 +8,38 @@ dotenv.config();
 const login = async (req, res) => {
   console.log('login');
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    if (encrypt(password) === user.password) {
-      const token = jwt.sign(
-        {
-          email: user.email,
-          userId: user._id,
-        },
-        process.env.JWT,
-        { expiresIn: 3600 }
-      );
-      res
-        .status(200)
-        .json({
-          user: {
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      if (encrypt(password) === user.password) {
+        const token = jwt.sign(
+          {
             email: user.email,
             userId: user._id,
           },
-          token,
-          message: 'autorisation is success!!!',
-        })
-        .end();
+          process.env.JWT,
+          { expiresIn: 3600 }
+        );
+        res
+          .status(200)
+          .json({
+            user: {
+              email: user.email,
+              userId: user._id,
+            },
+            token,
+            message: 'autorisation is success!!!',
+          })
+          .end();
+      } else {
+        res.status(403).json({ message: 'Wrong passwod!' });
+      }
     } else {
-      res.status(403).json({ message: 'Wrong passwod!' });
+      res.status(403).json({ message: 'There is no user with this email' }).end();
     }
-  } else {
-    res.status(403).json({ message: 'There is no user with this email' }).end();
+  } catch (error) {
+    console.log('error: ', error);
+    res.status(500).json({ message: 'no connect' }).end();
   }
 };
 
@@ -81,10 +86,10 @@ const getUserData = (req, res) => {
   }
   try {
     const user = jwt.verify(token, process.env.JWT);
-    res.status(200).json({message: 'token', user}).end();
+    res.status(200).json({ message: 'token', user }).end();
   } catch (error) {
     console.log(error);
-    res.status(500).json({message: error.message}).end();
+    res.status(500).json({ message: error.message }).end();
   }
 };
 

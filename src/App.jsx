@@ -20,6 +20,8 @@ const App = () => {
     tasks.fetchData();
   }, [user.state]);
 
+  console.log(user.state.email);
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -27,7 +29,7 @@ const App = () => {
         <Switch>
           <Route path='/' exact component={HomePage} />
           <Route path='/about' component={AboutPage} />
-          <Route path='/tasks' component={user.state.isGuest ? AuthPage : TasksPage} />
+          <Route path='/tasks' component={user.state.email ? TasksPage : AuthPage} />
           <Route path='/auth' component={AuthPage} />
         </Switch>
       </div>
