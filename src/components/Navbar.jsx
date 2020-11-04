@@ -1,13 +1,18 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
-import { ContextUser } from '../user/index';
+import { NavLink, useHistory } from 'react-router-dom';
+import { ContextUser } from '../user/';
+// import { ContextApp } from '../tasks';
 
 const Navbar = () => {
   const user = useContext(ContextUser);
+  // const tasks = useContext(ContextApp);
+  const history = useHistory();
 
   const logoutHandler = (e) => {
     e.preventDefault();
     user.userLogout();
+    // tasks.logout();
+    history.push('/')
   };
 
   return (

@@ -61,8 +61,14 @@ const TasksProvider = ({ children }) => {
     }
   };
 
+  const resetTaskList = () => {
+    dispatch({ type: 'RESET_TASKS'});
+  };
+
   return (
-    <ContextApp.Provider value={{ state, dispatch, fetchData, addNote, removeNote, modifyTask }}>
+    <ContextApp.Provider
+      value={{ state, dispatch, fetchData, addNote, removeNote, modifyTask, resetTaskList }}
+    >
       {children}
     </ContextApp.Provider>
   );

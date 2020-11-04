@@ -16,6 +16,9 @@ export const tasks = (state, action) => {
         return { ...item, text, isDone };
       });
     }
+    case 'RESET_TASKS': {
+      return [];
+    }
     default:
       return state;
   }

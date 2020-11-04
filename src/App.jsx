@@ -20,6 +20,8 @@ const App = () => {
   useEffect(() => {
     if (user.state.email) {
       tasks.fetchData();
+    } else {
+      tasks.resetTaskList();
     }
   }, [user.state]);
 
