@@ -18,7 +18,7 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
     const markDoneHandler = (id) => {
       const note = { id, text, isDone: !isDone };
       modifyTask(note);
-    }
+    };
 
     const submithandler = (e) => {
       e.preventDefault();
@@ -97,7 +97,6 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
 
 const Tasks = () => {
   const tasks = useContext(ContextApp);
-  console.log('tasks: ', tasks.state);
 
   const removeHandler = (id) => {
     tasks.removeNote(id);

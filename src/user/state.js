@@ -1,14 +1,13 @@
-import { useReducer, useContext } from 'react';
+/* eslint-disable no-unused-vars */
+import { useReducer } from 'react';
 import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
-// import { ContextApp } from '../tasks';
 import routers from '../routes';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
-  // const tasks = useContext(ContextApp);
 
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
@@ -16,6 +15,7 @@ const UserProvider = ({ children }) => {
       const {
         data: { user, token },
       } = await axios.post(url, { email, password });
+      console.log(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
@@ -36,6 +36,7 @@ const UserProvider = ({ children }) => {
   };
 
   const userInit = async () => {
+    console.log('userinit');
     const url = routers.user();
     const token = localStorage.getItem('token') || '';
     try {
@@ -43,6 +44,21 @@ const UserProvider = ({ children }) => {
         data: { user, message },
       } = await axios(url, { headers: { Authorization: token } });
       dispatch({ type: 'USER__INIT', payload: { user } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const userLogout = async () => {
+    console.log('logout');
+    const url = routers.logout();
+    localStorage.setItem('token', null);
+    localStorage.setItem('user', null);
+    try {
+      const {
+        data: { user, message },
+      } = await axios.post(url);
+      dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +72,7 @@ const UserProvider = ({ children }) => {
         userSignIn,
         userSignUp,
         userInit,
+        userLogout,
       }}
     >
       {children}

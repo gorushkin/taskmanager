@@ -5,6 +5,11 @@ import { ContextUser } from '../user/index';
 const Navbar = () => {
   const user = useContext(ContextUser);
 
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    user.userLogout();
+  };
+
   return (
     <nav className='navbar-expand-lg navbar navbar-dark bg-primary'>
       <span className='navbar-brand text-white'>TaskManager {user.state.email || 'NoNaMe'}</span>
@@ -38,7 +43,7 @@ const Navbar = () => {
           </li>
           <li className='nav-item'>
             {user.state.email ? (
-              <NavLink className='nav-link' to='/about'>
+              <NavLink to="/" onClick={logoutHandler} className='nav-link'>
                 LogOut
               </NavLink>
             ) : (

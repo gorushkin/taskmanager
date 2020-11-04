@@ -1,10 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ContextUser } from '../user';
 
 const HomePage = () => {
-  const user = useContext(ContextUser);
-
   return (
     <div className='jumbotron jumbotron-fluid'>
       <div className='container'>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import TasksPage from './pages/TasksPage';
@@ -17,10 +18,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    tasks.fetchData();
+    if (user.state.email) {
+      tasks.fetchData();
+    }
   }, [user.state]);
-
-  console.log(user.state.email);
 
   return (
     <BrowserRouter>

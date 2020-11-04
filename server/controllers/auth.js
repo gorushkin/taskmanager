@@ -75,6 +75,7 @@ const register = async (req, res) => {
 };
 
 const getUserData = (req, res) => {
+  console.log('getUserData');
   const token = req.header('Authorization');
   if (!token) {
     const user = {
@@ -88,9 +89,21 @@ const getUserData = (req, res) => {
     const user = jwt.verify(token, process.env.JWT);
     res.status(200).json({ message: 'token', user }).end();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message }).end();
+    const user = {
+      email: null,
+      userId: null,
+    };
+    res.status(200).json({ message: error.message, user }).end();
   }
 };
 
-export { login, register, getUserData };
+const logout = (req, res) => {
+  console.log('logout');
+  const user = {
+    email: null,
+    userId: null,
+  };
+  res.json({ message: 'logout', user }).end();
+};
+
+export { login, register, getUserData, logout };

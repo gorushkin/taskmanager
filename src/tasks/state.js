@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useReducer } from 'react';
 import axios from 'axios';
 import routes from '../routes';
@@ -6,10 +7,9 @@ import { ContextApp } from './index';
 
 const TasksProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tasks, []);
-  const token = localStorage.getItem('token');
 
   const fetchData = async () => {
-    console.log('fetchData');
+    const token = localStorage.getItem('token');
     const url = routes.tasks();
     try {
       const {
@@ -22,8 +22,8 @@ const TasksProvider = ({ children }) => {
   };
 
   const addNote = async (text, userId) => {
+    const token = localStorage.getItem('token');
     const url = routes.task();
-    console.log(text, userId);
     try {
       const res = await axios.post(url, { text, userId }, { headers: { Authorization: token } });
       const {
@@ -36,6 +36,7 @@ const TasksProvider = ({ children }) => {
   };
 
   const removeNote = async (id) => {
+    const token = localStorage.getItem('token');
     const url = routes.task(id);
     try {
       const {
@@ -48,6 +49,7 @@ const TasksProvider = ({ children }) => {
   };
 
   const modifyTask = async ({ id, text, isDone }) => {
+    const token = localStorage.getItem('token');
     const url = routes.task(id);
     try {
       const {
