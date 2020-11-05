@@ -23,7 +23,7 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => console.log('MongoDB connected!'))
-  .catch((error) => console.log(error.message));
+  .catch((error) => console.log('MongoDB', error.message));
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -34,8 +34,6 @@ app.use(express.static(path.join(__dirname, '../', 'build')));
 app.use('/api', auth);
 app.use('/api', authMiddleWare, tasks);
 
-
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
 });
@@ -43,7 +41,7 @@ app.get('/', (req, res) => {
 app.get('/temp', (req, res) => {
   console.log(process.env.DB_K);
   console.log(process.env.DB_K);
-  res.json({db: 'asfsdfadf'})
+  res.json({ db: 'asfsdfadf' });
 });
 
 export default app;
