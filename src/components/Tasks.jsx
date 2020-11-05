@@ -98,7 +98,6 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
 const Tasks = () => {
   const tasks = useContext(ContextApp);
 
-
   const removeHandler = (id) => {
     tasks.removeNote(id);
   };
