@@ -25,7 +25,6 @@ mongoose
   .then(() => console.log('MongoDB connected!'))
   .catch((error) => console.log(error.message));
 
-
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
@@ -33,10 +32,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../', 'build')));
 app.use('/api', auth);
-app.use('/api',authMiddleWare, tasks);
+app.use('/api', authMiddleWare, tasks);
+
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
+});
+
+app.get('/temp', (req, res) => {
+  console.log(process.env.DB_K);
+  console.log(process.env.DB_K);
+  res.json({db: 'asfsdfadf'})
 });
 
 export default app;
