@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { ContextApp } from '../tasks';
+import {ContextUser} from '../user'
 
 const InputForm = () => {
   const [value, setValue] = useState('');
   const tasks = useContext(ContextApp);
+  const user = useContext(ContextUser);
 
   const inputHandler = (e) => {
     setValue(e.target.value);
@@ -11,13 +13,12 @@ const InputForm = () => {
 
   const submithandler = (e) => {
     e.preventDefault();
-    tasks.addNote(value);
+    tasks.addNote(value, user.state.userId);
     setValue('');
   };
 
   return (
     <form onSubmit={submithandler} className='d-flex flex-row'>
-      {/* <div className='d-flex'> */}
       <div className='col'>
         <input
           type='task'
@@ -33,7 +34,6 @@ const InputForm = () => {
           Submit
         </button>
       </div>
-      {/* </div> */}
     </form>
   );
 };

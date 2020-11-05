@@ -1,8 +1,8 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ContextApp } from '../tasks';
 import cn from 'classnames';
 
-const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
+const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
   const Item = () => {
     const [edit, setEdit] = useState(false);
     const [value, setValue] = useState(text);
@@ -18,11 +18,12 @@ const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
     const markDoneHandler = (id) => {
       const note = { id, text, isDone: !isDone };
       modifyTask(note);
-    }
+    };
 
     const submithandler = (e) => {
       e.preventDefault();
-      const note = { id, text: value, isDone };
+      const note = { id: _id, text: value, isDone };
+      console.log('note: ', note);
       modifyTask(note);
       setValue('');
       setEdit(false);
@@ -34,7 +35,7 @@ const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
 
     if (edit) {
       return (
-        <li key={id} className='list-group-item list__item mb-1'>
+        <li key={_id} className='list-group-item list__item mb-1'>
           <form onSubmit={submithandler}>
             <div className='form-row'>
               <div className='col'>
@@ -59,12 +60,12 @@ const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
     }
 
     return (
-      <li key={id} className='list-group-item list__item mb-1'>
+      <li key={_id} className='list-group-item list__item mb-1'>
         <div className={textClass}>{text}</div>
         <div className='list__btns'>
           <button
             href='#'
-            onClick={() => renameHandler(id)}
+            onClick={() => renameHandler(_id)}
             className='list__btn'
             aria-hidden='true'
           >
@@ -72,14 +73,14 @@ const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
           </button>
           <button
             href='#'
-            onClick={() => removeHandler(id)}
+            onClick={() => removeHandler(_id)}
             className='list__btn'
             aria-hidden='true'
           >
             remove
           </button>
           <button
-            onClick={() => markDoneHandler(id)}
+            onClick={() => markDoneHandler(_id)}
             href='#'
             className='list__btn'
             aria-hidden='true'
@@ -91,16 +92,12 @@ const ListItem = ({ id, text, isDone }, removeHandler, modifyTask) => {
     );
   };
 
-  return <Item key={id} />;
+  return <Item key={_id} />;
 };
 
 const Tasks = () => {
   const tasks = useContext(ContextApp);
 
-  useEffect(() => {
-    tasks.fetchData();
-    console.log('fetching notes from server');
-  }, []);
 
   const removeHandler = (id) => {
     tasks.removeNote(id);

@@ -4,17 +4,20 @@ export const tasks = (state, action) => {
       return [action.payload, ...state];
     }
     case 'FETCH_TASKS': {
-      return [...action.payload.data];
+      return [...action.payload];
     }
     case 'REMOVE_TASK': {
-      return state.filter((item) => item.id !== action.payload);
+      return state.filter((item) => item._id !== action.payload);
     }
     case 'MODIFY_TASK': {
-      const { id, text, isDone } = action.payload;
+      const { _id, text, isDone } = action.payload;
       return state.map((item) => {
-        if (item.id !== id) return item;
+        if (item._id !== _id) return item;
         return { ...item, text, isDone };
       });
+    }
+    case 'RESET_TASKS': {
+      return [];
     }
     default:
       return state;

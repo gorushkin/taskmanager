@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useReducer } from 'react';
 import axios from 'axios';
 import routes from '../routes';
@@ -8,42 +9,66 @@ const TasksProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tasks, []);
 
   const fetchData = async () => {
+    const token = localStorage.getItem('token');
     const url = routes.tasks();
-    const data = await axios.get(url);
-    dispatch({ type: 'FETCH_TASKS', payload: data });
+    try {
+      const {
+        data: { tasks },
+      } = await axios.get(url, { headers: { Authorization: token } });
+      dispatch({ type: 'FETCH_TASKS', payload: tasks });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  const addNote = async (text) => {
+  const addNote = async (text, userId) => {
+    const token = localStorage.getItem('token');
     const url = routes.task();
     try {
-      const res = await axios.post(url, { text });
-      const { data } = res;
-      dispatch({ type: 'ADD_TASK', payload: data });
+      const res = await axios.post(url, { text, userId }, { headers: { Authorization: token } });
+      const {
+        data: { note },
+      } = res;
+      dispatch({ type: 'ADD_TASK', payload: note });
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
     }
   };
 
   const removeNote = async (id) => {
+    const token = localStorage.getItem('token');
     const url = routes.task(id);
     try {
       const {
-        data: { id },
-      } = await axios.delete(url);
-      dispatch({ type: 'REMOVE_TASK', payload: id });
-    } catch (error) {}
+        data: { _id },
+      } = await axios.delete(url, { headers: { Authorization: token } });
+      dispatch({ type: 'REMOVE_TASK', payload: _id });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const modifyTask = async ({ id, text, isDone }) => {
+    const token = localStorage.getItem('token');
     const url = routes.task(id);
     try {
-      await axios.patch(url, { text, isDone });
-      dispatch({ type: 'MODIFY_TASK', payload: { id, text, isDone } });
-    } catch (error) {}
+      const {
+        data: { _id, message },
+      } = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
+      dispatch({ type: 'MODIFY_TASK', payload: { _id, text, isDone } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const resetTaskList = () => {
+    dispatch({ type: 'RESET_TASKS'});
   };
 
   return (
-    <ContextApp.Provider value={{ state, dispatch, fetchData, addNote, removeNote, modifyTask }}>
+    <ContextApp.Provider
+      value={{ state, dispatch, fetchData, addNote, removeNote, modifyTask, resetTaskList }}
+    >
       {children}
     </ContextApp.Provider>
   );

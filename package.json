@@ -2,6 +2,7 @@
   "name": "taskmanager",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -9,17 +10,25 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.3",
     "classnames": "^2.2.6",
     "concurrently": "^5.3.0",
     "connect": "^3.7.0",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
+    "mongoose": "^5.10.11",
     "morgan": "^1.10.0",
     "node-sass": "^4.14.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "popper.js": "^1.16.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -31,9 +40,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "back-dev": "nodemon --exec npx babel-node server/index.js",
+    "back-dev": "nodemon --exec npx babel-node --watch server server/index.js",
     "back": "node server/index.js",
-    "start-dev": "concurrently \"nodemon --exec npx babel-node server/index.js\"  \"react-scripts start\"",
+    "dev": "concurrently \"nodemon --exec npx babel-node --watch server server/index.js\"  \"react-scripts start\"",
     "start": "node server/index.js"
   },
   "eslintConfig": {
@@ -56,6 +65,7 @@
   },
   "devDependencies": {
     "@babel/node": "^7.12.1",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
     "react-hot-loader": "^4.13.0"
   }
