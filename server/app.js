@@ -38,10 +38,4 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
 });
 
-app.get('/temp', (req, res) => {
-  console.log(process.env.DB_K);
-  console.log(process.env.DB_K);
-  res.json({ db: 'asfsdfadf' });
-});
-
 export default app;
