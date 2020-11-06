@@ -20,7 +20,6 @@ const UserProvider = ({ children }) => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
-      showAlert(message, 'success');
     } catch (error) {
       showAlert(error.response.data.message, 'danger');
     }
@@ -30,40 +29,44 @@ const UserProvider = ({ children }) => {
     const url = routes.register();
     try {
       const response = await axios.post(url, { email, password });
-      const { user, token } = response;
+      const {
+        data: { user, token, message },
+      } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      dispatch({ type: 'USER__SIGNIN', payload: { user } });
+      showAlert(message, 'success');
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userInit = async () => {
-    console.log('userinit');
     const url = routes.user();
     const token = localStorage.getItem('token') || '';
     try {
+      const response = await axios(url, { headers: { Authorization: token } });
       const {
         data: { user, message },
-      } = await axios(url, { headers: { Authorization: token } });
+      } = response;
       dispatch({ type: 'USER__INIT', payload: { user } });
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userLogout = async () => {
-    console.log('logout');
     const url = routes.logout();
     localStorage.setItem('token', null);
     localStorage.setItem('user', null);
     try {
+      const response = await axios.post(url);
       const {
         data: { user, message },
-      } = await axios.post(url);
+      } = response;
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 

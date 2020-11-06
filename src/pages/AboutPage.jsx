@@ -14,7 +14,7 @@ const IndexPage = () => (
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           Добавить авторизацию пользователей
-          <span className='badge badge-danger'>todo</span>
+          <span className='badge badge-secondary'>is done</span>
         </li>
         <li className='list-group-item d-flex justify-content-between align-items-center'>
           Добавить подзадачи
