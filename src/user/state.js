@@ -1,31 +1,36 @@
 /* eslint-disable no-unused-vars */
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
+import { AlertContext } from '../alert';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
+  const { showAlert } = useContext(AlertContext);
 
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
     try {
+      const response = await axios.post(url, { email, password });
       const {
-        data: { user, token },
-      } = await axios.post(url, { email, password });
+        data: { user, token, message },
+      } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
+      showAlert(message, 'success');
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userSignUp = async ({ email, password }) => {
     const url = routes.register();
     try {
-      const { user, token } = await axios.post(url, { email, password });
+      const response = await axios.post(url, { email, password });
+      const { user, token } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
