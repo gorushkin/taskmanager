@@ -4,7 +4,6 @@ import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
-import routers from '../routes';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
@@ -15,7 +14,6 @@ const UserProvider = ({ children }) => {
       const {
         data: { user, token },
       } = await axios.post(url, { email, password });
-      console.log(token);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
@@ -25,7 +23,7 @@ const UserProvider = ({ children }) => {
   };
 
   const userSignUp = async ({ email, password }) => {
-    const url = routers.register();
+    const url = routes.register();
     try {
       const { user, token } = await axios.post(url, { email, password });
       localStorage.setItem('token', token);
@@ -37,7 +35,7 @@ const UserProvider = ({ children }) => {
 
   const userInit = async () => {
     console.log('userinit');
-    const url = routers.user();
+    const url = routes.user();
     const token = localStorage.getItem('token') || '';
     try {
       const {
@@ -51,7 +49,7 @@ const UserProvider = ({ children }) => {
 
   const userLogout = async () => {
     console.log('logout');
-    const url = routers.logout();
+    const url = routes.logout();
     localStorage.setItem('token', null);
     localStorage.setItem('user', null);
     try {

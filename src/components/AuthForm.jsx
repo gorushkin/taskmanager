@@ -55,8 +55,18 @@ const AuthForm = () => {
       <button className='btn btn-primary' onClick={signUpHandler}>
         Sign Up
       </button>
+      <div className='flex-column justify-content-center align-items-center'>
+        <h3 className='text-center'>Демо доступ</h3>
+        <div>
+          <p className='text-center'>
+            Login: <b>demo</b>
+          </p>
+          <p className='text-center'>
+            Password: <b>demo</b>
+          </p>
+        </div>
+      </div>
     </form>
   );
 };
-
 export default AuthForm;
