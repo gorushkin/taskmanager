@@ -1,20 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink, useHistory, Link } from 'react-router-dom';
-import { ContextUser } from '../user/';
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncActions } from '../slices';
 
 const Navbar = () => {
-  const user = useContext(ContextUser);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    user.userLogout();
-    history.push('/')
+    dispatch(asyncActions.userLogout());
+    history.push('/');
   };
 
   return (
     <nav className='navbar-expand-lg navbar navbar-dark bg-primary'>
-      <span className='navbar-brand text-white'>TaskManager {user.state.email || 'NoNaMe'}</span>
+      <span className='navbar-brand text-white'>TaskManager {user.email || 'NoNaMe'}</span>
       <button
         className='navbar-toggler'
         type='button'
@@ -44,8 +46,8 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className='nav-item'>
-            {user.state.email ? (
-              <Link to="/" onClick={logoutHandler} className='nav-link'>
+            {user.email ? (
+              <Link to='/' onClick={logoutHandler} className='nav-link'>
                 LogOut
               </Link>
             ) : (

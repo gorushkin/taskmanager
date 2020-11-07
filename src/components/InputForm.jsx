@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { ContextApp } from '../tasks';
-import {ContextUser} from '../user'
+import { useSelector } from 'react-redux';
 
 const InputForm = () => {
   const [value, setValue] = useState('');
   const tasks = useContext(ContextApp);
-  const user = useContext(ContextUser);
+
+  const { user } = useSelector((state) => state.user);
 
   const inputHandler = (e) => {
     setValue(e.target.value);
@@ -13,7 +14,7 @@ const InputForm = () => {
 
   const submithandler = (e) => {
     e.preventDefault();
-    tasks.addNote(value, user.state.userId);
+    tasks.addNote(value, user.userId);
     setValue('');
   };
 
