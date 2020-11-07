@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { ContextUser } from '../user';
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ email: 'artyom', password: '12345' });
+  const [form, setForm] = useState({ email: 'demo', password: 'demo' });
 
   const user = useContext(ContextUser);
 
@@ -49,14 +49,24 @@ const AuthForm = () => {
           value={form.password}
         />
       </div>
-      <button className='btn btn-primary' onClick={signInHandler}>
+      <button className='btn btn-primary mr-3' onClick={signInHandler}>
         Sign In
       </button>
       <button className='btn btn-primary' onClick={signUpHandler}>
         Sign Up
       </button>
+      <div className='flex-column justify-content-center align-items-center'>
+        <h3 className='text-center'>Демо доступ</h3>
+        <div>
+          <p className='text-center'>
+            Login: <b>demo</b>
+          </p>
+          <p className='text-center'>
+            Password: <b>demo</b>
+          </p>
+        </div>
+      </div>
     </form>
   );
 };
-
 export default AuthForm;

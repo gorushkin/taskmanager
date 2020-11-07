@@ -1,66 +1,72 @@
 /* eslint-disable no-unused-vars */
-import { useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
-import routers from '../routes';
+import { AlertContext } from '../alert';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});
+  const { showAlert } = useContext(AlertContext);
 
   const userSignIn = async ({ email, password }) => {
     const url = routes.login();
     try {
+      const response = await axios.post(url, { email, password });
       const {
-        data: { user, token },
-      } = await axios.post(url, { email, password });
-      console.log(token);
+        data: { user, token, message },
+      } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userSignUp = async ({ email, password }) => {
-    const url = routers.register();
+    const url = routes.register();
     try {
-      const { user, token } = await axios.post(url, { email, password });
+      const response = await axios.post(url, { email, password });
+      const {
+        data: { user, token, message },
+      } = response;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      dispatch({ type: 'USER__SIGNIN', payload: { user } });
+      showAlert(message, 'success');
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userInit = async () => {
-    console.log('userinit');
-    const url = routers.user();
+    const url = routes.user();
     const token = localStorage.getItem('token') || '';
     try {
+      const response = await axios(url, { headers: { Authorization: token } });
       const {
         data: { user, message },
-      } = await axios(url, { headers: { Authorization: token } });
+      } = response;
       dispatch({ type: 'USER__INIT', payload: { user } });
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 
   const userLogout = async () => {
-    console.log('logout');
-    const url = routers.logout();
+    const url = routes.logout();
     localStorage.setItem('token', null);
     localStorage.setItem('user', null);
     try {
+      const response = await axios.post(url);
       const {
         data: { user, message },
-      } = await axios.post(url);
+      } = response;
       dispatch({ type: 'USER__SIGNIN', payload: { user } });
     } catch (error) {
-      console.log(error);
+      showAlert(error.response.data.message, 'danger');
     }
   };
 

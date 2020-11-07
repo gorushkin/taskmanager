@@ -6,8 +6,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const login = async (req, res) => {
-  console.log('login');
   const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(403).json({ message: 'No blank fields!!!' }).end();
+  }
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -28,11 +30,11 @@ const login = async (req, res) => {
               userId: user._id,
             },
             token,
-            message: 'autorisation is success!!!',
+            message: 'Autorisation is success!!!',
           })
           .end();
       } else {
-        res.status(403).json({ message: 'Wrong passwod!' });
+        res.status(403).json({ message: 'Wrong passwod!' }).end();
       }
     } else {
       res.status(403).json({ message: 'There is no user with this email' }).end();
@@ -51,7 +53,7 @@ const register = async (req, res) => {
     res
       .status(409)
       .json({
-        message: 'not unique user email',
+        message: 'Not unique user email',
       })
       .end();
   }

@@ -5,12 +5,15 @@ import './style.scss';
 import 'bootstrap';
 import { UserProvider } from './user';
 import { TasksProvider } from './tasks';
+import { AlertProvider } from './alert';
 
 ReactDOM.render(
-  <UserProvider>
-    <TasksProvider>
-      <App />
-    </TasksProvider>
-  </UserProvider>,
+  <AlertProvider>
+    <UserProvider>
+      <TasksProvider>
+        <App />
+      </TasksProvider>
+    </UserProvider>
+  </AlertProvider>,
   document.getElementById('root')
 );
