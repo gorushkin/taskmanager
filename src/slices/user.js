@@ -52,10 +52,27 @@ const userLogout = createAsyncThunk('user/logout', async () => {
   }
 });
 
+const userSignUp = createAsyncThunk('user/signup', async ({ email, password }) => {
+  console.log('userSignUp');
+  const url = routes.register();
+  // try {
+  const response = await axios.post(url, { email, password });
+  console.log('response: ', response);
+  const {
+    data: { user, token },
+  } = response;
+  // localStorage.setItem('token', token);
+  // localStorage.setItem('user', JSON.stringify(user));
+  return response.data;
+  // } catch (error) {
+  // console.log(error.response.data.message);
+  // }
+});
+
 const slice = createSlice({
   name: 'user',
   initialState: {
-    user: { email: '', userId: '' },
+    user: { email: null, userId: null },
   },
   reducers: {},
   extraReducers: {
@@ -65,14 +82,22 @@ const slice = createSlice({
     [userLogin.fulfilled]: (state, { payload }) => {
       state.user = payload;
     },
-    [userLogout]: (state, { payload }) => {
+    [userLogout.fulfilled]: (state, { payload }) => {
       state.user = payload;
+    },
+    [userSignUp.fulfilled]: (state, { payload }) => {
+      state.user = payload;
+    },
+    [userSignUp.rejected]: (state, actions) => {
+      console.log('actions: ', actions);
+      console.log('we can-t login!!!!');
+      state.user = { email: null, userId: null };
     },
   },
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { userInit, userLogin, userLogout };
+const asyncActions = { userInit, userLogin, userLogout, userSignUp };
 
 export { actions, asyncActions };
 export default slice.reducer;

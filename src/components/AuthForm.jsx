@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { asyncActions } from '../slices';
 
 const AuthForm = () => {
   const [form, setForm] = useState({ email: 'demo', password: 'demo' });
 
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const signInHandler = (e) => {
@@ -15,8 +14,7 @@ const AuthForm = () => {
 
   const signUpHandler = (e) => {
     e.preventDefault();
-    // dispatch(asyncActions.userLogin());
-    // user.userSignUp(form);
+    dispatch(asyncActions.userSignUp(form));
   };
 
   const onChangeHandler = (e) => {
