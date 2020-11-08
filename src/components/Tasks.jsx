@@ -1,5 +1,6 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { ContextApp } from '../tasks';
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncActions, actions } from '../slices';
 import cn from 'classnames';
 
 const Form = ({ props: { _id, text, isDone, changeEditStatus, modifyTask } }) => {
@@ -90,6 +91,7 @@ const Task = ({
 };
 
 const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
+  console.log('ListItem');
   const Component = () => {
     const [edit, setEdit] = useState(false);
 
@@ -111,7 +113,7 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
 };
 
 const Tasks = () => {
-  const tasks = useContext(ContextApp);
+  const { tasks } = useSelector((state) => state.tasks);
 
   const removeHandler = (id) => {
     tasks.removeNote(id);
@@ -120,7 +122,7 @@ const Tasks = () => {
   return (
     <div className='col'>
       <ul className='list-group pt-5 '>
-        {tasks.state.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
+        {tasks.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
       </ul>
     </div>
   );

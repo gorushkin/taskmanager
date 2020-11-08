@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import TasksPage from './pages/TasksPage';
@@ -7,11 +7,9 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import { asyncActions } from './slices';
-import { ContextApp } from './tasks';
 import Navbar from './components/Navbar';
 
 const App = () => {
-  const tasks = useContext(ContextApp);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -22,9 +20,9 @@ const App = () => {
 
   useEffect(() => {
     if (user.email) {
-      tasks.fetchData();
+      dispatch(asyncActions.fetchData());
     } else {
-      tasks.resetTaskList();
+      // tasks.resetTaskList();
     }
   }, [user]);
 

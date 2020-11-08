@@ -17,13 +17,13 @@ const getTasks = async (req, res) => {
 
 const addTask = async (req, res) => {
   const { text, userId } = req.body;
-  const note = new Task({ text, isDone: false, userId });
+  const task = new Task({ text, isDone: false, userId });
   try {
-    await note.save();
+    await task.save();
     res
       .status(201)
       .json({
-        note,
+        task,
         message: 'task created',
       })
       .end();
