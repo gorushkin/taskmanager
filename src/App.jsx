@@ -6,7 +6,7 @@ import TasksPage from './pages/TasksPage';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
-import { asyncActions } from './slices';
+import { asyncActions, actions } from './slices';
 import Navbar from './components/Navbar';
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
     if (user.email) {
       dispatch(asyncActions.fetchData());
     } else {
-      // tasks.resetTaskList();
+      dispatch(actions.resetTaskList())
     }
   }, [user]);
 

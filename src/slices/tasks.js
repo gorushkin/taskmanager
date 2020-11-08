@@ -18,13 +18,38 @@ const fetchData = createAsyncThunk('tasks/fetchData', async () => {
 const addTask = createAsyncThunk('tasks/addTask', async ({ text, userId }) => {
   const token = localStorage.getItem('token');
   const url = routes.task();
-  console.log(text, userId);
   try {
     const res = await axios.post(url, { text, userId }, { headers: { Authorization: token } });
     const {
       data: { task },
     } = res;
     return task;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const removeTask = createAsyncThunk('tasks/removeTask', async (id) => {
+  const token = localStorage.getItem('token');
+  const url = routes.task(id);
+  try {
+    const {
+      data: { _id },
+    } = await axios.delete(url, { headers: { Authorization: token } });
+    return _id;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const modifyTask = createAsyncThunk('tasks/modifyTask', async ({ id, text, isDone }) => {
+  const token = localStorage.getItem('token');
+  const url = routes.task(id);
+  try {
+    const {
+      data: { _id, message },
+    } = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
+    return { _id, text, isDone };
   } catch (error) {
     console.log(error);
   }
@@ -37,7 +62,11 @@ const slice = createSlice({
     filter: '',
     sort: '',
   },
-  reducers: {},
+  reducers: {
+    resetTaskList(state) {
+      state.tasks = [];
+    },
+  },
   extraReducers: {
     [fetchData.fulfilled]: (state, { payload }) => {
       state.tasks = payload;
@@ -45,11 +74,22 @@ const slice = createSlice({
     [addTask.fulfilled]: (state, { payload }) => {
       state.tasks.push(payload);
     },
+    [removeTask.fulfilled]: (state, { payload }) => {
+      state.tasks = state.tasks.filter((item) => item._id !== payload);
+    },
+    [modifyTask.fulfilled]: (state, { payload }) => {
+      console.log('payload: ', payload);
+      const { _id, text, isDone } = payload;
+      state.tasks = state.tasks.map((item) => {
+        if (item._id !== _id) return item;
+        return { ...item, text, isDone };
+      });
+    },
   },
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { fetchData, addTask };
+const asyncActions = { fetchData, addTask, removeTask, modifyTask };
 
 export { actions, asyncActions };
 export default slice.reducer;
