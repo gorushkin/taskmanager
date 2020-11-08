@@ -1,6 +1,6 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncActions, actions } from '../slices';
+import { asyncActions } from '../slices';
 import cn from 'classnames';
 
 const Form = ({ props: { _id, text, isDone, changeEditStatus, modifyTask } }) => {

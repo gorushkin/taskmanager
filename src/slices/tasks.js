@@ -47,7 +47,7 @@ const modifyTask = createAsyncThunk('tasks/modifyTask', async ({ id, text, isDon
   const url = routes.task(id);
   try {
     const {
-      data: { _id, message },
+      data: { _id },
     } = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
     return { _id, text, isDone };
   } catch (error) {
@@ -77,9 +77,7 @@ const slice = createSlice({
     [removeTask.fulfilled]: (state, { payload }) => {
       state.tasks = state.tasks.filter((item) => item._id !== payload);
     },
-    [modifyTask.fulfilled]: (state, { payload }) => {
-      console.log('payload: ', payload);
-      const { _id, text, isDone } = payload;
+    [modifyTask.fulfilled]: (state, { payload: { _id, text, isDone } }) => {
       state.tasks = state.tasks.map((item) => {
         if (item._id !== _id) return item;
         return { ...item, text, isDone };

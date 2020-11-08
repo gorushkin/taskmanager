@@ -14,7 +14,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('app user init');
     dispatch(asyncActions.userInit());
   }, []);
 
