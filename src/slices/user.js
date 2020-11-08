@@ -3,18 +3,17 @@ import axios from 'axios';
 import { actions as errorActions } from './error';
 import routes from '../routes';
 
-const userInit = createAsyncThunk('user/init', async (rejectWithValue) => {
+const userInit = createAsyncThunk('user/init', async () => {
   const url = routes.user();
   const token = localStorage.getItem('token') || '';
   try {
     const response = await axios(url, { headers: { Authorization: token } });
     const {
-      data: { user, message },
+      data: { user },
     } = response;
     return user;
   } catch (error) {
     console.log(error.response.data.message);
-    return rejectWithValue(error.response.data.message);
   }
 });
 
@@ -32,12 +31,12 @@ const userLogin = createAsyncThunk(
       return user;
     } catch (error) {
       dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
-      return rejectWithValue(error.response.data.message);
+      return rejectWithValue();
     }
   }
 );
 
-const userLogout = createAsyncThunk('user/logout', async ({ dispatch }) => {
+const userLogout = createAsyncThunk('user/logout', async (rejectWithValue, dispatch) => {
   const url = routes.logout();
   localStorage.setItem('token', null);
   localStorage.setItem('user', null);
@@ -49,6 +48,7 @@ const userLogout = createAsyncThunk('user/logout', async ({ dispatch }) => {
     return user;
   } catch (error) {
     dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+    return rejectWithValue();
   }
 });
 
@@ -66,7 +66,7 @@ const userSignUp = createAsyncThunk(
       return response.data;
     } catch (error) {
       dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
-      return rejectWithValue(error.response.data.message);
+      return rejectWithValue();
     }
   }
 );
@@ -84,13 +84,13 @@ const slice = createSlice({
     [userLogin.fulfilled]: (state, { payload }) => {
       state.user = payload;
     },
-    [userLogin.rejected]: (state, { payload }) => {
+    [userLogin.rejected]: (state) => {
       state.user = { email: null, userId: null };
     },
     [userLogout.fulfilled]: (state, { payload }) => {
       state.user = payload;
     },
-    [userSignUp.fulfilled]: (state, { payload: { user, message } }) => {
+    [userSignUp.fulfilled]: (state, { payload: { user } }) => {
       state.user = user;
     },
     [userSignUp.rejected]: (state) => {
