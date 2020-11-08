@@ -4,7 +4,7 @@ import App from './App';
 import './style.scss';
 import 'bootstrap';
 import { TasksProvider } from './tasks';
-import { AlertProvider } from './alert';
+import { AlertProvider } from './__alert';
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './slices';
 import { Provider } from 'react-redux';

@@ -4,7 +4,7 @@ import axios from 'axios';
 import routes from '../routes';
 import user from './reducer';
 import { ContextUser } from './index';
-import { AlertContext } from '../alert';
+import { AlertContext } from '../__alert';
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(user, {});

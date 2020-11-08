@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { asyncActions } from '../slices';
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ email: 'demo', password: 'demo' });
+  const [form, setForm] = useState({ email: 'demo', password: 'demo1' });
 
   const dispatch = useDispatch();
 

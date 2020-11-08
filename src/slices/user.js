@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { actions as errorActions } from './error';
 import routes from '../routes';
 
-const userInit = createAsyncThunk('user/init', async () => {
+const userInit = createAsyncThunk('user/init', async (rejectWithValue) => {
   const url = routes.user();
   const token = localStorage.getItem('token') || '';
   try {
@@ -10,64 +11,65 @@ const userInit = createAsyncThunk('user/init', async () => {
     const {
       data: { user, message },
     } = response;
-    console.log('message: ', message);
     return user;
   } catch (error) {
     console.log(error.response.data.message);
+    return rejectWithValue(error.response.data.message);
   }
 });
 
-const userLogin = createAsyncThunk('user/login', async ({ email, password }) => {
-  const url = routes.login();
-  console.log('userLogin');
-  console.log(email, password);
-  try {
-    const response = await axios.post(url, { email, password });
-    const {
-      data: { user, token, message },
-    } = response;
-    console.log('message: ', message);
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    return user;
-  } catch (error) {
-    console.log(error.response.data.message);
+const userLogin = createAsyncThunk(
+  'user/login',
+  async ({ email, password }, { rejectWithValue, dispatch }) => {
+    const url = routes.login();
+    try {
+      const response = await axios.post(url, { email, password });
+      const {
+        data: { user, token },
+      } = response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
+    } catch (error) {
+      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      return rejectWithValue(error.response.data.message);
+    }
   }
-});
+);
 
-const userLogout = createAsyncThunk('user/logout', async () => {
+const userLogout = createAsyncThunk('user/logout', async ({ dispatch }) => {
   const url = routes.logout();
   localStorage.setItem('token', null);
   localStorage.setItem('user', null);
   try {
     const response = await axios.post(url);
     const {
-      data: { user, message },
+      data: { user },
     } = response;
-    console.log('message: ', message);
     return user;
   } catch (error) {
-    // showAlert(error.response.data.message, 'danger');
-    console.log(error.response.data.message);
+    dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
   }
 });
 
-const userSignUp = createAsyncThunk('user/signup', async ({ email, password }) => {
-  console.log('userSignUp');
-  const url = routes.register();
-  // try {
-  const response = await axios.post(url, { email, password });
-  console.log('response: ', response);
-  const {
-    data: { user, token },
-  } = response;
-  // localStorage.setItem('token', token);
-  // localStorage.setItem('user', JSON.stringify(user));
-  return response.data;
-  // } catch (error) {
-  // console.log(error.response.data.message);
-  // }
-});
+const userSignUp = createAsyncThunk(
+  'user/signup',
+  async ({ email, password }, { rejectWithValue, dispatch }) => {
+    const url = routes.register();
+    try {
+      const response = await axios.post(url, { email, password });
+      const {
+        data: { user, token },
+      } = response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      return response.data;
+    } catch (error) {
+      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
 
 const slice = createSlice({
   name: 'user',
@@ -82,15 +84,16 @@ const slice = createSlice({
     [userLogin.fulfilled]: (state, { payload }) => {
       state.user = payload;
     },
+    [userLogin.rejected]: (state, { payload }) => {
+      state.user = { email: null, userId: null };
+    },
     [userLogout.fulfilled]: (state, { payload }) => {
       state.user = payload;
     },
-    [userSignUp.fulfilled]: (state, { payload }) => {
-      state.user = payload;
+    [userSignUp.fulfilled]: (state, { payload: { user, message } }) => {
+      state.user = user;
     },
-    [userSignUp.rejected]: (state, actions) => {
-      console.log('actions: ', actions);
-      console.log('we can-t login!!!!');
+    [userSignUp.rejected]: (state) => {
       state.user = { email: null, userId: null };
     },
   },

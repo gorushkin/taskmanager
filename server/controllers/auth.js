@@ -50,25 +50,37 @@ const register = async (req, res) => {
   const { email, password } = req.body;
   const candidate = await User.findOne({ email });
   if (candidate) {
+    console.log('Not unique user email');
     res
       .status(409)
       .json({
         message: 'Not unique user email',
       })
       .end();
+    return;
   }
+  console.log('next!');
   const hash = encrypt(password);
   const user = new User({ email, password: hash });
   try {
     await user.save();
+    const token = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id,
+      },
+      process.env.JWT,
+      { expiresIn: 3600 }
+    );
     res
       .status(201)
       .json({
         user: {
-          user: user.email,
-          id: user._id,
+          email: user.email,
+          userId: user._id,
         },
-        message: 'use created',
+        token,
+        message: 'user created',
       })
       .end();
   } catch (error) {
