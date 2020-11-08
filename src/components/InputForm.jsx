@@ -1,20 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { ContextApp } from '../tasks';
-import {ContextUser} from '../user'
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncActions } from '../slices';
 
 const InputForm = () => {
-  const [value, setValue] = useState('');
-  const tasks = useContext(ContextApp);
-  const user = useContext(ContextUser);
+  const {
+    user: { userId },
+  } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
 
   const inputHandler = (e) => {
-    setValue(e.target.value);
+    setText(e.target.value);
   };
 
   const submithandler = (e) => {
     e.preventDefault();
-    tasks.addNote(value, user.state.userId);
-    setValue('');
+    dispatch(asyncActions.addTask({ text, userId }));
+    setText('');
   };
 
   return (
@@ -22,7 +24,7 @@ const InputForm = () => {
       <div className='col'>
         <input
           type='task'
-          value={value}
+          value={text}
           className='form-control form-control-lg w-100'
           id='exampleInputEmail1'
           aria-describedby='emailHelp'

@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './style.scss';
 import 'bootstrap';
-import { UserProvider } from './user';
-import { TasksProvider } from './tasks';
-import { AlertProvider } from './alert';
+import { configureStore } from '@reduxjs/toolkit';
+import reducer from './slices';
+import { Provider } from 'react-redux';
+
+const store = configureStore({ reducer });
 
 ReactDOM.render(
-  <AlertProvider>
-    <UserProvider>
-      <TasksProvider>
-        <App />
-      </TasksProvider>
-    </UserProvider>
-  </AlertProvider>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
