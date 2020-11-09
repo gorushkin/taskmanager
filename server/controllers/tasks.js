@@ -1,7 +1,6 @@
 import Task from '../models/Tasks.js';
 
 const getTasks = async (req, res) => {
-  console.log('getTasks');
   const {
     user: { userId },
   } = req;
@@ -10,7 +9,6 @@ const getTasks = async (req, res) => {
     const tasks = await Task.find({ userId });
     res.status(200).json({ tasks }).end();
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error }).end();
   }
 };
@@ -28,7 +26,6 @@ const addTask = async (req, res) => {
       })
       .end();
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error }).end();
   }
 };
@@ -36,8 +33,8 @@ const addTask = async (req, res) => {
 const removeTask = async (req, res) => {
   const id = req.params.id;
   try {
-    const {_id} = await Task.findByIdAndDelete(id);
-    res.status(200).json({_id}).end();
+    const { _id } = await Task.findByIdAndDelete(id);
+    res.status(200).json({ _id }).end();
   } catch (error) {
     res.status(500).json({ message: error.message }).end();
   }

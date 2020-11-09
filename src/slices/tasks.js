@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { actions as errorActions } from './error';
 import routes from '../routes';
 
 const fetchData = createAsyncThunk('tasks/fetchData', async () => {
@@ -15,45 +16,63 @@ const fetchData = createAsyncThunk('tasks/fetchData', async () => {
   }
 });
 
-const addTask = createAsyncThunk('tasks/addTask', async ({ text, userId }) => {
-  const token = localStorage.getItem('token');
-  const url = routes.task();
-  try {
-    const res = await axios.post(url, { text, userId }, { headers: { Authorization: token } });
-    const {
-      data: { task },
-    } = res;
-    return task;
-  } catch (error) {
-    console.log(error);
+const addTask = createAsyncThunk(
+  'tasks/addTask',
+  async ({ text, userId }, { rejectWithValue, dispatch }) => {
+    const token = localStorage.getItem('token');
+    const url = routes.task();
+    try {
+      const response = await axios.post(
+        url,
+        { text, userId },
+        { headers: { Authorization: token } }
+      );
+      const {
+        data: { task },
+      } = response;
+      return task;
+    } catch (error) {
+      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      return rejectWithValue();
+    }
   }
-});
+);
 
-const removeTask = createAsyncThunk('tasks/removeTask', async (id) => {
-  const token = localStorage.getItem('token');
-  const url = routes.task(id);
-  try {
-    const {
-      data: { _id },
-    } = await axios.delete(url, { headers: { Authorization: token } });
-    return _id;
-  } catch (error) {
-    console.log(error);
+const removeTask = createAsyncThunk(
+  'tasks/removeTask',
+  async (id, { rejectWithValue, dispatch }) => {
+    const token = localStorage.getItem('token');
+    const url = routes.task(id);
+    try {
+      const response = await axios.delete(url, { headers: { Authorization: token } });
+      const {
+        data: { _id },
+      } = response;
+      return _id;
+    } catch (error) {
+      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      return rejectWithValue();
+    }
   }
-});
+);
 
-const modifyTask = createAsyncThunk('tasks/modifyTask', async ({ id, text, isDone }) => {
-  const token = localStorage.getItem('token');
-  const url = routes.task(id);
-  try {
-    const {
-      data: { _id },
-    } = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
-    return { _id, text, isDone };
-  } catch (error) {
-    console.log(error);
+const modifyTask = createAsyncThunk(
+  'tasks/modifyTask',
+  async ({ id, text, isDone }, { rejectWithValue, dispatch }) => {
+    const token = localStorage.getItem('token');
+    const url = routes.task(id);
+    try {
+      const response = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
+      const {
+        data: { _id },
+      } = response;
+      return { _id, text, isDone };
+    } catch (error) {
+      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      return rejectWithValue();
+    }
   }
-});
+);
 
 const slice = createSlice({
   name: 'tasks',
