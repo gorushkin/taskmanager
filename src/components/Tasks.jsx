@@ -1,10 +1,12 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import { ContextApp } from '../tasks';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncActions } from '../slices';
 import cn from 'classnames';
 
 const Form = ({ props: { _id, text, isDone, changeEditStatus, modifyTask } }) => {
   const [value, setValue] = useState(text);
   const inputEl = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     inputEl.current.focus();
@@ -17,8 +19,7 @@ const Form = ({ props: { _id, text, isDone, changeEditStatus, modifyTask } }) =>
 
   const submithandler = (e) => {
     e.preventDefault();
-    const note = { id: _id, text: value, isDone };
-    modifyTask(note);
+    dispatch(asyncActions.modifyTask({ id: _id, text: value, isDone }));
     setValue('');
     changeEditStatus();
   };
@@ -49,12 +50,13 @@ const Form = ({ props: { _id, text, isDone, changeEditStatus, modifyTask } }) =>
   );
 };
 
-const Task = ({
-  props: { _id, text, isDone, changeEditStatus, removeHandler, markDoneHandler },
-}) => {
+const Task = ({ props: { _id, text, isDone, changeEditStatus } }) => {
   const textClass = cn('list__text', {
     'list__text--isdone': isDone,
   });
+  const dispatch = useDispatch();
+  const removeHandler = (id) => dispatch(asyncActions.removeTask(id));
+  const markDoneHandler = (id) => dispatch(asyncActions.modifyTask({ id, text, isDone: !isDone }));
 
   return (
     <li key={_id} className='list-group-item list__item mb-1'>
@@ -89,7 +91,7 @@ const Task = ({
   );
 };
 
-const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
+const ListItem = ({ _id, text, isDone }) => {
   const Component = () => {
     const [edit, setEdit] = useState(false);
 
@@ -97,31 +99,20 @@ const ListItem = ({ _id, text, isDone }, removeHandler, modifyTask) => {
       setEdit(!edit);
     };
 
-    const markDoneHandler = (id) => {
-      const note = { id, text, isDone: !isDone };
-      modifyTask(note);
-    };
-
     if (edit) {
-      return <Form props={{ _id, text, isDone, changeEditStatus, modifyTask }} />;
+      return <Form props={{ _id, text, isDone, changeEditStatus }} />;
     }
-    return <Task props={{ _id, text, isDone, changeEditStatus, removeHandler, markDoneHandler }} />;
+    return <Task props={{ _id, text, isDone, changeEditStatus }} />;
   };
   return <Component key={_id} />;
 };
 
 const Tasks = () => {
-  const tasks = useContext(ContextApp);
-
-  const removeHandler = (id) => {
-    tasks.removeNote(id);
-  };
+  const { tasks } = useSelector((state) => state.tasks);
 
   return (
     <div className='col'>
-      <ul className='list-group pt-5 '>
-        {tasks.state.map((item) => ListItem(item, removeHandler, tasks.modifyTask))}
-      </ul>
+      <ul className='list-group pt-5 '>{tasks.map((item) => ListItem(item))}</ul>
     </div>
   );
 };

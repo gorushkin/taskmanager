@@ -1,19 +1,20 @@
-import React, { useState, useContext } from 'react';
-import { ContextUser } from '../user';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { asyncActions } from '../slices';
 
 const AuthForm = () => {
-  const [form, setForm] = useState({ email: 'demo', password: 'demo' });
+  const [form, setForm] = useState({ email: 'demo', password: 'demo1' });
 
-  const user = useContext(ContextUser);
+  const dispatch = useDispatch();
 
   const signInHandler = (e) => {
     e.preventDefault();
-    user.userSignIn(form);
+    dispatch(asyncActions.userLogin(form));
   };
 
   const signUpHandler = (e) => {
     e.preventDefault();
-    user.userSignUp(form);
+    dispatch(asyncActions.userSignUp(form));
   };
 
   const onChangeHandler = (e) => {

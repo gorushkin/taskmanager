@@ -1,23 +1,30 @@
-import React, { useContext } from 'react';
-import { AlertContext } from '../alert';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions } from '../slices';
 
 const Alert = () => {
-  const {
-    state: { name, type },
-    hideAlert
-  } = useContext(AlertContext);
+  const { error, type } = useSelector((state) => state.error);
+  const dispatch = useDispatch();
 
   const closeHandler = () => {
-    hideAlert();
-  }
+    dispatch(actions.hideAlert());
+  };
 
-  return name && (
-    <div className={`alert alert-${type}`} role='alert'>
-      {name}
-      <button onClick={closeHandler} type='button' className='close' data-dismiss='alert' aria-label='Close'>
-        <span aria-hidden='true'>&times;</span>
-      </button>
-    </div>
+  return (
+    error && (
+      <div className={`alert alert-${type}`} role='alert'>
+        {error}
+        <button
+          onClick={closeHandler}
+          type='button'
+          className='close'
+          data-dismiss='alert'
+          aria-label='Close'
+        >
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>
+    )
   );
 };
 

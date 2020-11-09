@@ -1,15 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import AuthForm from '../components/AuthForm';
-import { ContextUser } from '../user';
 import { useHistory } from 'react-router-dom';
 import Alert from '../components/Alert';
 
 const AuthPage = () => {
-  const user = useContext(ContextUser);
+  const { user } = useSelector((state) => state.user);
   const history = useHistory();
 
   useEffect(() => {
-    if (user.state.email) {
+    if (user.email) {
       console.log('redrect!!!');
       history.push('/tasks');
     }
@@ -19,7 +19,7 @@ const AuthPage = () => {
     <>
       <Alert></Alert>
       <AuthForm></AuthForm>
-    </>
+  </>
   );
 };
 
