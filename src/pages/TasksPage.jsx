@@ -1,6 +1,6 @@
 import React from 'react';
 import InputForm from '../components/InputForm';
-import Tasks from '../components/Tasks';
+import TaskList from '../components/taskList/TaskList';
 import Alert from '../components/Alert';
 
 const TasksPage = () => {
@@ -8,7 +8,7 @@ const TasksPage = () => {
     <>
       <Alert></Alert>
       <InputForm />
-      <Tasks />
+      <TaskList />
     </>
   );
 };
