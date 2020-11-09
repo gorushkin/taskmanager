@@ -6,6 +6,8 @@ const InputForm = () => {
   const {
     user: { userId },
   } = useSelector((state) => state.user);
+  const { currentProjectId } = useSelector((state) => state.projects);
+  // console.log('currentProjectId: ', currentProjectId);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
 
@@ -15,7 +17,7 @@ const InputForm = () => {
 
   const submithandler = (e) => {
     e.preventDefault();
-    dispatch(asyncActions.addTask({ text, userId }));
+    dispatch(asyncActions.addTask({ text, userId, currentProjectId }));
     setText('');
   };
 
@@ -33,7 +35,7 @@ const InputForm = () => {
       </div>
       <div className='col-auto'>
         <button type='submit' className='btn btn-lg btn-primary px-sm-5'>
-          Submit
+          Add new task
         </button>
       </div>
     </form>

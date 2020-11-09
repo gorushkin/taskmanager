@@ -1,10 +1,10 @@
 import Task from '../models/Tasks.js';
 
 const getTasks = async (req, res) => {
+  console.log('getTasks');
   const {
     user: { userId },
   } = req;
-  console.log('userId: ', userId);
   try {
     const tasks = await Task.find({ userId });
     res.status(200).json({ tasks }).end();
@@ -14,7 +14,9 @@ const getTasks = async (req, res) => {
 };
 
 const addTask = async (req, res) => {
-  const { text, userId } = req.body;
+  console.log('addTask');
+  const { text, userId, currentProjectId } = req.body;
+  console.log('currentProjectId: ', currentProjectId);
   const task = new Task({ text, isDone: false, userId });
   try {
     await task.save();
@@ -26,7 +28,7 @@ const addTask = async (req, res) => {
       })
       .end();
   } catch (error) {
-    res.status(500).json({ message: error }).end();
+    res.status(500).json({ message: error.message }).end();
   }
 };
 

@@ -2,19 +2,15 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const taskSchema = new Schema({
-  text: {
+const projectSchema = new Schema({
+  name: {
     type: String,
     required: true,
   },
-  isDone: {
+  removable: {
     type: Boolean,
     required: true,
-    default: false,
-  },
-  projectId: {
-    type: String,
-    required: true,
+    default: true,
   },
   userId: {
     type: String,
@@ -22,4 +18,4 @@ const taskSchema = new Schema({
   },
 });
 
-export default mongoose.model('task', taskSchema);
+export default mongoose.model('project', projectSchema);

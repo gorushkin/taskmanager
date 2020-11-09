@@ -18,13 +18,13 @@ const fetchData = createAsyncThunk('tasks/fetchData', async () => {
 
 const addTask = createAsyncThunk(
   'tasks/addTask',
-  async ({ text, userId }, { rejectWithValue, dispatch }) => {
+  async ({ text, userId, currentProjectId }, { rejectWithValue, dispatch }) => {
     const token = localStorage.getItem('token');
-    const url = routes.task();
+    const url = routes.tasks();
     try {
       const response = await axios.post(
         url,
-        { text, userId },
+        { text, userId, currentProjectId },
         { headers: { Authorization: token } }
       );
       const {
@@ -32,7 +32,8 @@ const addTask = createAsyncThunk(
       } = response;
       return task;
     } catch (error) {
-      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      const errorMsg = error.response.data.message || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
     }
   }
@@ -50,7 +51,8 @@ const removeTask = createAsyncThunk(
       } = response;
       return _id;
     } catch (error) {
-      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      const errorMsg = error.response.data.message || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
     }
   }
@@ -62,13 +64,18 @@ const modifyTask = createAsyncThunk(
     const token = localStorage.getItem('token');
     const url = routes.task(id);
     try {
-      const response = await axios.patch(url, { text, isDone }, { headers: { Authorization: token } });
+      const response = await axios.patch(
+        url,
+        { text, isDone },
+        { headers: { Authorization: token } }
+      );
       const {
         data: { _id },
       } = response;
       return { _id, text, isDone };
     } catch (error) {
-      dispatch(errorActions.showAlert({ error: error.response.data.message, type: 'danger' }));
+      const errorMsg = error.response.data.message || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
       return rejectWithValue();
     }
   }
@@ -92,6 +99,9 @@ const slice = createSlice({
     },
     [addTask.fulfilled]: (state, { payload }) => {
       state.tasks.push(payload);
+    },
+    [addTask.rejected]: (state, { payload }) => {
+      return state;
     },
     [removeTask.fulfilled]: (state, { payload }) => {
       state.tasks = state.tasks.filter((item) => item._id !== payload);

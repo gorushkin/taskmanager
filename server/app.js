@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import auth from './routes/auth.js';
 import tasks from './routes/tasks.js';
+import projects from './routes/projects.js';
 import morgan from 'morgan';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -32,10 +33,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../', 'build')));
 app.use('/api', auth);
-app.use('/api', authMiddleWare, tasks);
+app.use('/api/projects', authMiddleWare, projects);
+app.use('/api/tasks', authMiddleWare, tasks);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
+});
+
+app.get('/test', (req, res) => {
+  res.json({message: 'Server is OK!!!'}).end();
 });
 
 export default app;

@@ -4,6 +4,7 @@ import { actions as errorActions } from './error';
 import routes from '../routes';
 
 const userInit = createAsyncThunk('user/init', async () => {
+  console.log('init start');
   const url = routes.user();
   const token = localStorage.getItem('token') || '';
   try {

@@ -20,6 +20,7 @@ const App = () => {
   useEffect(() => {
     if (user.email) {
       dispatch(asyncActions.fetchData());
+      dispatch(asyncActions.fetchProjects());
     } else {
       dispatch(actions.resetTaskList())
     }

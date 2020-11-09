@@ -1,5 +1,6 @@
 import encrypt from '../encrypt.js';
 import User from '../models/User.js';
+import Project from '../models/Project.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -62,8 +63,10 @@ const register = async (req, res) => {
   console.log('next!');
   const hash = encrypt(password);
   const user = new User({ email, password: hash });
+  const defaultProject = new Project({ name: 'Inbox', removable: false, userId: user._id });
   try {
     await user.save();
+    await defaultProject.save();
     const token = jwt.sign(
       {
         email: user.email,
