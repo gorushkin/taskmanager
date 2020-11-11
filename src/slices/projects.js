@@ -17,17 +17,18 @@ const fetchProjects = createAsyncThunk('projects/fetchData', async () => {
   }
 });
 
+// const addProject = createAsyncThunk('projects/add', async(name) => {
+
+// } )
+
 const slice = createSlice({
   name: 'projects',
   initialState: {
     projects: [],
+    test: '',
     currentProjectId: null,
   },
-  reducers: {
-    resetTaskList(state) {
-      state.tasks = [];
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchProjects.fulfilled]: (state, { payload }) => {
       const [{ _id }] = payload.filter((item) => item.name === 'Inbox');

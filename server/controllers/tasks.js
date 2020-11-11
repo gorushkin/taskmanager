@@ -14,10 +14,8 @@ const getTasks = async (req, res) => {
 };
 
 const addTask = async (req, res) => {
-  console.log('addTask');
   const { text, userId, currentProjectId } = req.body;
-  console.log('currentProjectId: ', currentProjectId);
-  const task = new Task({ text, isDone: false, userId });
+  const task = new Task({ text, isDone: false, userId, projectId: currentProjectId });
   try {
     await task.save();
     res
