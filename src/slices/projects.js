@@ -47,14 +47,18 @@ const slice = createSlice({
   initialState: {
     projects: [],
     test: '',
-    currentProjectId: null,
+    activeProjectId: null,
   },
-  reducers: {},
+  reducers: {
+    changeActiveProject(state, { payload}) {
+      state.activeProjectId = payload;
+    },
+  },
   extraReducers: {
     [fetchProjects.fulfilled]: (state, { payload }) => {
       const [{ _id }] = payload.filter((item) => item.name === 'Inbox');
       state.projects = payload;
-      state.currentProjectId = _id;
+      state.activeProjectId = _id;
     },
     [addProject.fulfilled]: (state, { payload }) => {
       state.projects.push(payload);

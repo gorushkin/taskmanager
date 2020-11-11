@@ -6,8 +6,8 @@ const InputForm = () => {
   const {
     user: { userId },
   } = useSelector((state) => state.user);
-  const { currentProjectId } = useSelector((state) => state.projects);
-  // console.log('currentProjectId: ', currentProjectId);
+  const { activeProjectId } = useSelector((state) => state.projects);
+  // console.log('activeProjectId: ', activeProjectId);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
 
@@ -17,7 +17,7 @@ const InputForm = () => {
 
   const submithandler = (e) => {
     e.preventDefault();
-    dispatch(asyncActions.addTask({ text, userId, currentProjectId }));
+    dispatch(asyncActions.addTask({ text, userId, activeProjectId }));
     setText('');
   };
 

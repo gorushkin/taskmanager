@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncActions } from '../slices';
+import { asyncActions, actions } from '../slices';
 import cn from 'classnames';
 
 const AddProject = ({ handler, btnState }) => {
@@ -8,7 +8,6 @@ const AddProject = ({ handler, btnState }) => {
   const {
     user: { userId },
   } = useSelector((state) => state.user);
-  console.log('userId: ', userId);
   const dispatch = useDispatch();
 
   const changeHandler = (e) => {
@@ -17,7 +16,6 @@ const AddProject = ({ handler, btnState }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(value);
     setValue('');
     handler();
     dispatch(asyncActions.addProject({ name: value, userId }));
@@ -52,15 +50,19 @@ const AddProject = ({ handler, btnState }) => {
   );
 };
 
-const ProjectBtn = ({ name, _id }, currentProjectId) => {
+const ProjectBtn = ({ name, _id }, activeProjectId, changeActiveProject) => {
   const projectBtnClass = cn('nav-link btn-block mb-2 text-left btn', {
-    'btn-primary': currentProjectId === _id,
-    'btn-light': currentProjectId !== _id,
+    'btn-primary': activeProjectId === _id,
+    'btn-light': activeProjectId !== _id,
   });
+
+  const clickHandler = () => {
+    changeActiveProject(_id);
+  };
 
   return (
     <li key={_id} className='nav-item'>
-      <button type='button' className={projectBtnClass}>
+      <button onClick={clickHandler} type='button' className={projectBtnClass}>
         {name}
       </button>
     </li>
@@ -68,18 +70,22 @@ const ProjectBtn = ({ name, _id }, currentProjectId) => {
 };
 
 const Projects = () => {
-  const { projects, currentProjectId } = useSelector((state) => state.projects);
+  const { projects, activeProjectId } = useSelector((state) => state.projects);
+  const [btnState, setbtnState] = useState(false);
+  const dispatch = useDispatch();
 
-  const [isForm, setIsForm] = useState(false);
+  const changeActiveProject = (id) => {
+    dispatch(actions.changeActiveProject(id))
+  }
 
   const addProjectHandler = () => {
-    setIsForm(!isForm);
+    setbtnState(!btnState);
   };
 
   return (
     <ul className='nav flex-column'>
-      {projects.map((item) => ProjectBtn(item, currentProjectId))}
-      <AddProject handler={addProjectHandler} btnState={isForm} />
+      {projects.map((item) => ProjectBtn(item, activeProjectId, changeActiveProject))}
+      <AddProject handler={addProjectHandler} btnState={btnState} />
     </ul>
   );
 };

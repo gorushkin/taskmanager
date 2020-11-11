@@ -18,13 +18,13 @@ const fetchData = createAsyncThunk('tasks/fetchData', async () => {
 
 const addTask = createAsyncThunk(
   'tasks/addTask',
-  async ({ text, userId, currentProjectId }, { rejectWithValue, dispatch }) => {
+  async ({ text, userId, activeProjectId }, { rejectWithValue, dispatch }) => {
     const token = localStorage.getItem('token');
     const url = routes.tasks();
     try {
       const response = await axios.post(
         url,
-        { text, userId, currentProjectId },
+        { text, userId, activeProjectId },
         { headers: { Authorization: token } }
       );
       const {
