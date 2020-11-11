@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { actions as errorActions } from './error';
 import routes from '../routes';
+import routers from '../routes';
 
 const fetchProjects = createAsyncThunk('projects/fetchData', async () => {
   console.log('fetchProjects');
@@ -17,9 +18,29 @@ const fetchProjects = createAsyncThunk('projects/fetchData', async () => {
   }
 });
 
-// const addProject = createAsyncThunk('projects/add', async(name) => {
-
-// } )
+const addProject = createAsyncThunk(
+  'projects/add',
+  async ({ name, userId }, { rejectWithValue, dispatch }) => {
+    const url = routers.project();
+    const token = localStorage.getItem('token');
+    console.log('text: ', name);
+    try {
+      const response = await axios.post(
+        url,
+        { name, userId },
+        { headers: { Authorization: token } }
+      );
+      const {
+        data: { project },
+      } = response;
+      return project;
+    } catch (error) {
+      const errorMsg = error.response.data.message || error.message || 'Oops!!!';
+      dispatch(errorActions.showAlert({ error: errorMsg, type: 'danger' }));
+      return rejectWithValue();
+    }
+  }
+);
 
 const slice = createSlice({
   name: 'projects',
@@ -35,11 +56,14 @@ const slice = createSlice({
       state.projects = payload;
       state.currentProjectId = _id;
     },
+    [addProject.fulfilled]: (state, { payload }) => {
+      state.projects.push(payload);
+    },
   },
 });
 
 const actions = { ...slice.actions };
-const asyncActions = { fetchProjects };
+const asyncActions = { fetchProjects, addProject };
 
 export { actions, asyncActions };
 export default slice.reducer;

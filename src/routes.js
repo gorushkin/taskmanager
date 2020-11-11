@@ -9,6 +9,7 @@ const routers = {
   tasks: () => [host, prefix, 'tasks'].join('/'),
   task: (id) => [host, prefix, 'task', id].join('/'),
   projects: () => [host, prefix, 'projects'].join('/'),
+  project: (id) => [host, prefix, 'projects', id].join('/'),
 };
 
 export default routers;

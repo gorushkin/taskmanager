@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { asyncActions } from '../slices';
 import cn from 'classnames';
 
 const AddProject = ({ handler, btnState }) => {
   const [value, setValue] = useState('');
+  const {
+    user: { userId },
+  } = useSelector((state) => state.user);
+  console.log('userId: ', userId);
+  const dispatch = useDispatch();
 
   const changeHandler = (e) => {
     setValue(e.target.value);
-  }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(value);
+    setValue('');
     handler();
-  }
+    dispatch(asyncActions.addProject({ name: value, userId }));
+  };
 
   if (btnState) {
     return (
